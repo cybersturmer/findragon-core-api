@@ -5,6 +5,9 @@ name = "pypi"
 
 [packages]
 fastapi = "*"
+sqlalchemy = "*"
+sqlalchemy-utils = "*"
+babel = "*"
 
 [dev-packages]
 
