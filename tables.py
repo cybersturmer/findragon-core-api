@@ -31,7 +31,7 @@ class AllocatedPieItemModel(Base):
     )
 
     currency = Column(
-        CurrencyType
+        String
     )
 
     allocation_in_portfolio = Column(
@@ -48,11 +48,6 @@ class AllocatedPieItemModel(Base):
     )
 
     exchange_code = Column(
-        String,
-        nullable=True
-    )
-
-    currency_ticker = Column(
         String,
         nullable=True
     )

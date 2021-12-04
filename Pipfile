@@ -8,6 +8,7 @@ fastapi = "*"
 sqlalchemy = "*"
 sqlalchemy-utils = "*"
 babel = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
