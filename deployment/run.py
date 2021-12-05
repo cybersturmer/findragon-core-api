@@ -8,5 +8,6 @@ if __name__ == '__main__':
         'main:app',
         host=settings.server_host,
         port=settings.server_port,
+        log_level=settings.log_level,
         reload=True
     )

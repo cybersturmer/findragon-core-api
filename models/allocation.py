@@ -1,11 +1,8 @@
 from typing import Optional
 
 from pydantic import BaseModel
-from sqlalchemy_utils import CurrencyType
 
-from pydantic import BaseModel
-
-from tables import AllocatedPieItemModel, AllocationType
+from tables import PortfolioAllocatedPieItemModel, AllocationType
 
 
 class AllocatedPieItemSchema(BaseModel):
@@ -18,7 +15,7 @@ class AllocatedPieItemSchema(BaseModel):
     asset_ticker: Optional[str]
     exchange_code: Optional[str]
     currency_ticker: Optional[str]
-    parent: 'AllocatedPieItemSchema'
+    parent: 'PortfolioAllocatedPieItemModel'
 
     class Config:
         orm_mode = True
