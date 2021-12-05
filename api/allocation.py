@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter
 from fastapi import Depends
 
-from models.allocation import AllocatedPieItemModel
+from models.allocation import PortfolioAllocatedPieItemModel
 from services.allocation import AllocatedPieItemService
 
 router = APIRouter(
@@ -11,6 +11,6 @@ router = APIRouter(
 )
 
 
-@router.get('/', response_model=List[AllocatedPieItemModel])
+@router.get('/', response_model=List[PortfolioAllocatedPieItemModel])
 def get_allocations(service: AllocatedPieItemService = Depends()):
     return service.get_list()
