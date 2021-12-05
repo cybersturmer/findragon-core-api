@@ -17,6 +17,8 @@ class AllocationType(Enum):
 class TransactionType(Enum):
     BUY = auto()
     SELL = auto()
+    DIVIDENDS = auto()
+    COUPON = auto()
 
 
 class BrokerType(Enum):
