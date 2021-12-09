@@ -1,45 +1,16 @@
 from datetime import datetime
-from enum import Enum, auto
 
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Unicode, Date, Float, DateTime
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy_utils.types import ChoiceType
 
 from database import Base
-
-
-class AllocationType(Enum):
-    ASSET = auto()
-    CATEGORY = auto()
-    CURRENCY = auto()
-
-
-class TransactionType(Enum):
-    BUY = auto()
-    SELL = auto()
-    DIVIDENDS = auto()
-    COUPON = auto()
-
-
-class BrokerType(Enum):
-    SBER = auto()
-    TCS = auto()
-
-
-class PortfolioGoalType(Enum):
-    GROW = auto()
-    INCOME = auto()
-
-
-class PaymentType(Enum):
-    DIVIDENDS = auto()
-    COUPON = auto()
-
-
-class AssetType(Enum):
-    SHARE = auto()
-    BOND = auto()
-    FUND = auto()
+from enums import \
+    BrokerType, \
+    PortfolioGoalType, \
+    AllocationType, \
+    AssetType, \
+    TransactionType
 
 
 class UserModel(Base):

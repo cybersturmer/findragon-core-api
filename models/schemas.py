@@ -2,7 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from tables import PortfolioAllocatedPieItemModel, AllocationType
+from models.tables import PortfolioAllocatedPieItemModel, AllocationType
 
 
 class AllocatedPieItemSchema(BaseModel):

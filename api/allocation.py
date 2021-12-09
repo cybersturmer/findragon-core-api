@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter
 from fastapi import Depends
 
-from models.allocation import PortfolioAllocatedPieItemModel
+from models.schemas import PortfolioAllocatedPieItemModel
 from services.allocation import AllocatedPieItemService
 
 router = APIRouter(
