@@ -26,6 +26,6 @@
 # IncomeCalendar
 #### GET list <portfolioId, currency, periodType (yearAhead)>
 
-# Recommendations/
+# Recommendations
 ## Refill 
 ### <allow_sell, amount, apply_lot_size, by_categories, currency, filtered_investments, fractional_shares, include_prices, manual_edited_items: [], min_amount: null, portfolio_id, selected_filter, sell_if>
