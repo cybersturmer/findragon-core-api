@@ -5,7 +5,7 @@ from sqlalchemy.orm import relationship, backref
 from sqlalchemy_utils.types import ChoiceType
 
 from database import Base
-from enums import \
+from models.enums import \
     BrokerType, \
     PortfolioGoalType, \
     AllocationType, \
@@ -165,7 +165,7 @@ class PortfolioAllocatedPieItemModel(Base):
 
     parent = Column(
         Integer,
-        ForeignKey('allocated_pie_items.id')
+        ForeignKey('portfolio_allocated_pie_items.id')
     )
 
     user_id = Column(

@@ -1,8 +1,6 @@
 from typing import Optional
-
 from pydantic import BaseModel
-
-from models.tables import PortfolioAllocatedPieItemModel, AllocationType
+from models.enums import AllocationType
 
 
 class AllocatedPieItemSchema(BaseModel):
@@ -15,7 +13,7 @@ class AllocatedPieItemSchema(BaseModel):
     asset_ticker: Optional[str]
     exchange_code: Optional[str]
     currency_ticker: Optional[str]
-    parent: 'PortfolioAllocatedPieItemModel'
+    parent: int
 
     class Config:
         orm_mode = True
