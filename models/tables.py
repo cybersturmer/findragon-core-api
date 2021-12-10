@@ -13,7 +13,7 @@ from models.enums import \
     TransactionType
 
 
-class UserModel(Base):
+class User(Base):
     __tablename__ = 'users'
 
     id = Column(
@@ -54,14 +54,19 @@ class UserModel(Base):
         return f'User (@{self.username})'
 
 
-class PortfolioSettingsModel(Base):
-    __tablename__ = 'portfolio_settings'
+class Portfolio(Base):
+    __tablename__ = 'portfolio'
 
     id = Column(
         Integer,
         primary_key=True,
         index=True,
         autoincrement=True
+    )
+
+    title = Column(
+        Unicode(255),
+        nullable=False
     )
 
     apply_taxes_on_income = Column(
@@ -99,8 +104,8 @@ class PortfolioSettingsModel(Base):
     )
 
     user = relationship(
-        UserModel,
-        backref=backref('portfolio_settings'),
+        User,
+        backref=backref('portfolios'),
         order_by=id
     )
 
@@ -116,11 +121,11 @@ class PortfolioSettingsModel(Base):
     )
 
     def __repr__(self):
-        return f'PortfolioSetting ({self.id})'
+        return f'Portfolio ({self.id})'
 
 
-class PortfolioAllocatedPieItemModel(Base):
-    __tablename__ = "portfolio_allocated_pie_items"
+class PortfolioAllocatedPieSlice(Base):
+    __tablename__ = "portfolio_allocated_pie_slices"
 
     id = Column(
         Integer,
@@ -143,12 +148,22 @@ class PortfolioAllocatedPieItemModel(Base):
         nullable=False
     )
 
-    allocation_in_portfolio = Column(
+    portfolio_id = Column(
+        Integer, ForeignKey('portfolio.id')
+    )
+
+    portfolio = relationship(
+        Portfolio,
+        backref=backref('allocated_pie_slices'),
+        order_by=id
+    )
+
+    portfolio_ratio = Column(
         Integer,
         default=0
     )
 
-    allocation_in_category = Column(
+    category_ratio = Column(
         Integer,
         default=0
     )
@@ -163,9 +178,14 @@ class PortfolioAllocatedPieItemModel(Base):
         nullable=True
     )
 
-    parent = Column(
+    parent_id = Column(
         Integer,
-        ForeignKey('portfolio_allocated_pie_items.id')
+        ForeignKey('portfolio_allocated_pie_slices.id'),
+        nullable=True
+    )
+
+    children = relationship(
+        'PortfolioAllocatedPieSlice'
     )
 
     user_id = Column(
@@ -173,8 +193,8 @@ class PortfolioAllocatedPieItemModel(Base):
     )
 
     user = relationship(
-        UserModel,
-        backref=backref('allocated_pies'),
+        User,
+        backref=backref('allocated_pie_slices'),
         order_by=id
     )
 
@@ -190,10 +210,10 @@ class PortfolioAllocatedPieItemModel(Base):
     )
 
     def __repr__(self):
-        return f'AllocatedPieItem {self.title} - {self.allocation_in_category}'
+        return f'PortfolioAllocatedPieSlice {self.title} - {self.allocation_in_category}'
 
 
-class PortfolioTransactionModel(Base):
+class PortfolioTransaction(Base):
     __tablename__ = 'portfolio_transactions'
 
     id = Column(
@@ -271,12 +291,22 @@ class PortfolioTransactionModel(Base):
         ChoiceType(TransactionType, impl=Integer())
     )
 
+    portfolio_id = Column(
+        Integer, ForeignKey('portfolio.id')
+    )
+
+    portfolio = relationship(
+        Portfolio,
+        backref=backref('transactions'),
+        order_by=id
+    )
+
     user_id = Column(
         Integer, ForeignKey('users.id')
     )
 
     user = relationship(
-        UserModel,
+        User,
         backref=backref('transactions'),
         order_by=id
     )
@@ -296,7 +326,7 @@ class PortfolioTransactionModel(Base):
         return f'PortfolioTransaction {self.id} - {TransactionType(self.type).name} - {self.ticker}'
 
 
-class PortfolioInvestmentModel(Base):
+class PortfolioInvestment(Base):
     __tablename__ = 'portfolio_investments'
 
     id = Column(
@@ -336,12 +366,22 @@ class PortfolioInvestmentModel(Base):
         nullable=False
     )
 
+    portfolio_id = Column(
+        Integer, ForeignKey('portfolio.id')
+    )
+
+    portfolio = relationship(
+        Portfolio,
+        backref=backref('investments'),
+        order_by=id
+    )
+
     user_id = Column(
         Integer, ForeignKey('users.id')
     )
 
     user = relationship(
-        UserModel,
+        User,
         backref=backref('investments'),
         order_by=id
     )
