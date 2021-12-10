@@ -16,9 +16,20 @@ class PortfolioAllocatedPieSlice(BaseModel):
 
     asset_ticker: Optional[str]
     exchange_code: Optional[str]
-    currency_ticker: Optional[str]
 
-    parent: int
+    parent: Optional[int]
 
     class Config:
         orm_mode = True
+
+
+class PortfolioAllocatedPieSliceCreate(PortfolioAllocatedPieSlice):
+    pass
+
+
+class PortfolioAllocatedPieSliceUpdate(PortfolioAllocatedPieSlice):
+    pass
+
+
+class PortfolioAllocatedPieSliceDelete(PortfolioAllocatedPieSlice):
+    pass
