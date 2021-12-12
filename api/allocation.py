@@ -1,7 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter
-from fastapi import Depends
+from fastapi import APIRouter, Depends, Response, status
 
 from models import schemas
 from services.allocation import AllocatedPieSlice
@@ -11,14 +10,14 @@ router = APIRouter(
 )
 
 
-@router.get('/', response_model=List[schemas.PortfolioAllocatedPieSlice])
+@router.get('/', response_model=List[schemas.PortfolioAllocatedPieSliceGet])
 async def get_allocations(
         service: AllocatedPieSlice = Depends()
 ):
     return service.get_list()
 
 
-@router.post('/', response_model=schemas.PortfolioAllocatedPieSlice)
+@router.post('/', response_model=schemas.PortfolioAllocatedPieSliceCreate)
 async def create_allocation(
         data: schemas.PortfolioAllocatedPieSliceCreate,
         service: AllocatedPieSlice = Depends()
@@ -28,7 +27,7 @@ async def create_allocation(
     )
 
 
-@router.get('/{item_id}', response_model=schemas.PortfolioAllocatedPieSlice)
+@router.get('/{item_id}', response_model=schemas.PortfolioAllocatedPieSliceGet)
 async def get_allocation(
         item_id: int,
         service: AllocatedPieSlice = Depends()
@@ -38,7 +37,7 @@ async def get_allocation(
     )
 
 
-@router.put('/{item_id}', response_model=schemas.PortfolioAllocatedPieSlice)
+@router.put('/{item_id}', response_model=schemas.PortfolioAllocatedPieSliceUpdate)
 async def update_allocation(
         item_id: int,
         data: schemas.PortfolioAllocatedPieSliceUpdate,
@@ -50,11 +49,15 @@ async def update_allocation(
     )
 
 
-@router.delete('/{item_id}', response_model=schemas.PortfolioAllocatedPieSlice)
+@router.delete('/{item_id}')
 async def delete_allocation(
         item_id: int,
         service: AllocatedPieSlice = Depends()
 ):
-    return service.delete(
+    service.delete(
         item_id
+    )
+
+    return Response(
+        status_code=status.HTTP_204_NO_CONTENT
     )

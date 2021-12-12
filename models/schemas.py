@@ -3,8 +3,7 @@ from pydantic import BaseModel
 from models.enums import AllocationType
 
 
-class PortfolioAllocatedPieSlice(BaseModel):
-    id: int
+class PortfolioAllocatedPieSliceBase(BaseModel):
     type: AllocationType
     title: str
     currency: str
@@ -17,19 +16,23 @@ class PortfolioAllocatedPieSlice(BaseModel):
     asset_ticker: Optional[str]
     exchange_code: Optional[str]
 
-    parent: Optional[int]
+    parent_id: Optional[int]
 
     class Config:
         orm_mode = True
 
 
-class PortfolioAllocatedPieSliceCreate(PortfolioAllocatedPieSlice):
+class PortfolioAllocatedPieSliceGet(PortfolioAllocatedPieSliceBase):
+    id: int
+
+
+class PortfolioAllocatedPieSliceCreate(PortfolioAllocatedPieSliceBase):
     pass
 
 
-class PortfolioAllocatedPieSliceUpdate(PortfolioAllocatedPieSlice):
+class PortfolioAllocatedPieSliceUpdate(PortfolioAllocatedPieSliceBase):
     pass
 
 
-class PortfolioAllocatedPieSliceDelete(PortfolioAllocatedPieSlice):
+class PortfolioAllocatedPieSliceDelete(PortfolioAllocatedPieSliceBase):
     pass
