@@ -10,7 +10,6 @@ sqlalchemy-utils = "*"
 babel = "*"
 python-dotenv = "*"
 alembic = "*"
-jupyter = "*"
 
 [dev-packages]
 
