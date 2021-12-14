@@ -135,21 +135,18 @@ class PortfolioAllocatedPieSlice(Base):
     )
 
     type = Column(
-        ChoiceType(AllocationType, impl=Integer())
+        ChoiceType(AllocationType, impl=Integer()),
+        nullable=False
     )
 
     title = Column(
         Unicode(255),
-        nullable=True
-    )
-
-    currency = Column(
-        String,
         nullable=False
     )
 
     portfolio_id = Column(
-        Integer, ForeignKey('portfolio.id')
+        Integer, ForeignKey('portfolio.id'),
+        nullable=False
     )
 
     portfolio = relationship(

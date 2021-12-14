@@ -4,9 +4,12 @@ from models.enums import AllocationType
 
 
 class PortfolioAllocatedPieSliceBase(BaseModel):
+
+    """
+    Implement validators for this model. """
+
     type: AllocationType
     title: str
-    currency: str
 
     portfolio_id: int
     portfolio_ratio: int
