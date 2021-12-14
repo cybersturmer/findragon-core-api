@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, Response, status
 from models import schemas
 from services.allocation import AllocatedPieSlice
 
+
 router = APIRouter(
     prefix='/allocations'
 )
