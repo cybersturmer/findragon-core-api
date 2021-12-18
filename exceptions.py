@@ -1,0 +1,2 @@
+class RemoteDataError(IOError):
+    pass
