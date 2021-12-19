@@ -5,9 +5,13 @@ from models.enums import AllocationType, BrokerType, PortfolioGoalType
 
 
 class PortfolioBase(BaseModel):
+
     title: constr(min_length=1)
+
     apply_taxes_on_income: bool
+
     tax_percent: conint(ge=0, le=100)
+
     broker: BrokerType
 
     goal_currency: str
@@ -38,6 +42,7 @@ class PortfolioDelete(PortfolioBase):
 
 
 class PortfolioAllocatedPieSliceBase(BaseModel):
+
     type: AllocationType
     title: constr(min_length=1)
 
