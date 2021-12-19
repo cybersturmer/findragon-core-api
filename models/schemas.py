@@ -5,7 +5,7 @@ from models.enums import AllocationType, BrokerType, PortfolioGoalType
 
 
 class PortfolioBase(BaseModel):
-
+    id: Optional[int]
     title: constr(min_length=1)
 
     apply_taxes_on_income: bool
@@ -30,15 +30,15 @@ class PortfolioCreate(PortfolioBase):
 
 
 class PortfolioGet(PortfolioBase):
-    id: int
+    pass
 
 
 class PortfolioUpdate(PortfolioBase):
-    id: int
+    pass
 
 
 class PortfolioDelete(PortfolioBase):
-    id: int
+    pass
 
 
 class PortfolioAllocatedPieSliceBase(BaseModel):
@@ -46,7 +46,7 @@ class PortfolioAllocatedPieSliceBase(BaseModel):
     type: AllocationType
     title: constr(min_length=1)
 
-    portfolio_id: int
+    portfolio_id: Optional[int] = None
 
     portfolio_ratio: conint(ge=0, le=100)
     category_ratio: conint(ge=0, le=100)
@@ -68,8 +68,11 @@ class PortfolioAllocatedPieSliceCreate(PortfolioAllocatedPieSliceBase):
     pass
 
 
-class PortfolioAllocatedPieSliceUpdate(PortfolioAllocatedPieSliceBase):
-    pass
+class PortfolioAllocatedPieSliceUpdate(BaseModel):
+    title: Optional[constr(min_length=1)]
+
+    portfolio_ratio: Optional[conint(ge=0, le=100)]
+    category_ratio: Optional[conint(ge=0, le=100)]
 
 
 class PortfolioAllocatedPieSliceDelete(PortfolioAllocatedPieSliceBase):

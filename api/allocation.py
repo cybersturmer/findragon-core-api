@@ -38,7 +38,7 @@ async def get_allocation(
     )
 
 
-@router.put('/{item_id}', response_model=schemas.PortfolioAllocatedPieSliceUpdate)
+@router.patch('/{item_id}', response_model=schemas.PortfolioAllocatedPieSliceGet)
 async def update_allocation(
         item_id: int,
         data: schemas.PortfolioAllocatedPieSliceUpdate,

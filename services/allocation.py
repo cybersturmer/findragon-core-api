@@ -46,6 +46,9 @@ class AllocatedPieSlice:
         allocation = self._get(item_id=item_id)
 
         for field, value in data:
+            if value is None:
+                continue
+
             setattr(allocation, field, value)
 
         self.orm_session.commit()
