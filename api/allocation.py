@@ -28,35 +28,35 @@ async def create_allocation(
     )
 
 
-@router.get('/{item_id}', response_model=schemas.PortfolioAllocatedPieSliceGet)
+@router.get('/{key}', response_model=schemas.PortfolioAllocatedPieSliceGet)
 async def get_allocation(
-        item_id: int,
+        key: int,
         service: AllocatedPieSlice = Depends()
 ):
     return service.get(
-        item_id
+        key
     )
 
 
-@router.patch('/{item_id}', response_model=schemas.PortfolioAllocatedPieSliceGet)
+@router.patch('/{key}', response_model=schemas.PortfolioAllocatedPieSliceGet)
 async def update_allocation(
-        item_id: int,
+        key: int,
         data: schemas.PortfolioAllocatedPieSliceUpdate,
         service: AllocatedPieSlice = Depends()
 ):
     return service.update(
-        item_id,
+        key,
         data
     )
 
 
-@router.delete('/{item_id}')
+@router.delete('/{key}')
 async def delete_allocation(
-        item_id: int,
+        key: int,
         service: AllocatedPieSlice = Depends()
 ):
     service.delete(
-        item_id
+        key
     )
 
     return Response(

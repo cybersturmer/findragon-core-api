@@ -27,35 +27,35 @@ async def create_portfolio(
     )
 
 
-@router.get('/{item_id}', response_model=schemas.PortfolioGet)
+@router.get('/{key}', response_model=schemas.PortfolioGet)
 async def get_portfolio(
-        item_id: int,
+        key: int,
         service: Portfolio = Depends()
 ):
     return service.get(
-        item_id
+        key
     )
 
 
-@router.put('/{item_id}', response_model=schemas.PortfolioUpdate)
+@router.put('/{key}', response_model=schemas.PortfolioUpdate)
 async def update_portfolio(
-        item_id: int,
+        key: int,
         data: schemas.PortfolioUpdate,
         service: Portfolio = Depends()
 ):
     return service.update(
-        item_id,
+        key,
         data
     )
 
 
-@router.delete('/{item_id}')
+@router.delete('/{key}')
 async def delete_portfolio(
-        item_id: int,
+        key: int,
         service: Portfolio = Depends()
 ):
     service.delete(
-        item_id
+        key
     )
 
     return Response(
