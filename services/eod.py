@@ -22,8 +22,9 @@ class EOD:
             request_session: requests.Session = Depends(get_request_session),
             orm_session: ORMSession = Depends(get_orm_session)
     ):
-        self.base_url = settings.eod_historical_data.get("API_URL")
-        self.api_token = settings.eod_historical_data.get('API_TOKEN')
+        self.base_url = settings.eod.api_url
+        self.api_token = settings.eod.api_token
+
         self.request_session = request_session
         self.orm_session = orm_session
 
