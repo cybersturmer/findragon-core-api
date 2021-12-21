@@ -1,0 +1,46 @@
+[
+  {
+    "type": 2,
+    "title": "Indexed",
+    "portfolio_id": 1,
+    "portfolio_ratio": 30,
+    "category_ratio": 100,
+    "asset_ticker": null,
+    "exchange_code": null,
+    "parent_id": null,
+    "id": 1
+  },
+  {
+    "type": 2,
+    "title": "Bonds",
+    "portfolio_id": 1,
+    "portfolio_ratio": 70,
+    "category_ratio": 100,
+    "asset_ticker": null,
+    "exchange_code": null,
+    "parent_id": null,
+    "id": 2
+  },
+  {
+    "type": 2,
+    "title": "RU000A100HE1",
+    "portfolio_id": 1,
+    "portfolio_ratio": 70,
+    "category_ratio": 100,
+    "asset_ticker": "RU000A100HE1",
+    "exchange_code": "MCX",
+    "parent_id": 2,
+    "id": 3
+  },
+  {
+    "type": 2,
+    "title": "SBER",
+    "portfolio_id": 1,
+    "portfolio_ratio": 30,
+    "category_ratio": 100,
+    "asset_ticker": "SBER",
+    "exchange_code": "MCX",
+    "parent_id": 2,
+    "id": 4
+  }
+]

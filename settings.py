@@ -7,8 +7,8 @@ EOD_HISTORICAL_DATA_API_URL = 'https://eodhistoricaldata.com/api'
 
 
 class EOD(BaseSettings):
-    api_token = os.getenv(EOD_HISTORICAL_DATA_API_KEY_ENV_VAR)
-    api_url = EOD_HISTORICAL_DATA_API_URL
+    api_token: str = os.getenv(EOD_HISTORICAL_DATA_API_KEY_ENV_VAR)
+    api_url: str = EOD_HISTORICAL_DATA_API_URL
 
 
 class Settings(BaseSettings):

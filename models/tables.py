@@ -182,7 +182,8 @@ class PortfolioAllocatedPieSlice(Base):
     )
 
     children = relationship(
-        'PortfolioAllocatedPieSlice'
+        'PortfolioAllocatedPieSlice',
+        backref=backref('parent', remote_side=[id])
     )
 
     user_id = Column(
