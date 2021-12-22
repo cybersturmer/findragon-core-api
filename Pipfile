@@ -20,3 +20,9 @@ python_version = "3.9"
 
 [packages.uvicorn]
 extras = [ "standard",]
+
+[packages.python-jose]
+extras = [ "cryptography",]
+
+[packages.passlib]
+extras = [ "bcrypt",]
