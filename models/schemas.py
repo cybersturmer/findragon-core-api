@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional, List
+from typing import Optional, List, ForwardRef
 from pydantic import BaseModel, constr, conint
 from models.enums import AllocationType, BrokerType, PortfolioGoalType
 
@@ -8,7 +8,8 @@ class PortfolioBase(BaseModel):
     id: Optional[int]
     title: constr(
         strip_whitespace=True,
-        min_length=1)
+        min_length=1
+    )
 
     apply_taxes_on_income: bool
 
@@ -45,17 +46,27 @@ class PortfolioDelete(PortfolioBase):
 
 class PortfolioAllocatedPieSliceBase(BaseModel):
     type: AllocationType
-    title: constr(strip_whitespace=True, min_length=1)
+    title: constr(
+        strip_whitespace=True,
+        min_length=1
+    )
 
     portfolio_id: Optional[int] = None
 
-    category_ratio: conint(ge=100, le=10000)
+    category_ratio: conint(
+        ge=100,
+        le=10000
+    )
 
-    asset_ticker: Optional[constr(min_length=1)]
-    exchange_code: Optional[constr(min_length=1)]
+    asset_ticker: Optional[
+        constr(min_length=1)
+    ]
+
+    exchange_code: Optional[
+        constr(min_length=1)
+    ]
 
     parent_id: Optional[int]
-    children: List
 
     class Config:
         orm_mode = True
@@ -64,6 +75,10 @@ class PortfolioAllocatedPieSliceBase(BaseModel):
 class PortfolioAllocatedPieSliceGet(PortfolioAllocatedPieSliceBase):
     id: int
     portfolio_ratio: conint(ge=100, le=10000)
+    children: List['PortfolioAllocatedPieSliceGet']
+
+
+PortfolioAllocatedPieSliceGet.update_forward_refs()
 
 
 class PortfolioAllocatedPieSliceCreate(PortfolioAllocatedPieSliceBase):
