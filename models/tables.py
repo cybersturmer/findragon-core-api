@@ -324,8 +324,8 @@ class PortfolioTransaction(Base):
         return f'PortfolioTransaction {self.id} - {TransactionType(self.type).name} - {self.ticker}'
 
 
-class PortfolioInvestment(Base):
-    __tablename__ = 'portfolio_investments'
+class PortfolioAsset(Base):
+    __tablename__ = 'portfolio_assets'
 
     id = Column(
         Integer,
@@ -370,7 +370,7 @@ class PortfolioInvestment(Base):
 
     portfolio = relationship(
         Portfolio,
-        backref=backref('investments'),
+        backref=backref('assets'),
         order_by=id
     )
 
@@ -380,7 +380,7 @@ class PortfolioInvestment(Base):
 
     user = relationship(
         User,
-        backref=backref('investments'),
+        backref=backref('assets'),
         order_by=id
     )
 
@@ -396,4 +396,4 @@ class PortfolioInvestment(Base):
     )
 
     def __repr__(self):
-        return f'Investment {self.id} - {self.ticker} / {self.amount} '
+        return f'PortfolioAsset {self.id} - {self.ticker} / {self.amount} '

@@ -94,3 +94,25 @@ class PortfolioAllocatedPieSliceUpdate(BaseModel):
 
 class PortfolioAllocatedPieSliceDelete(PortfolioAllocatedPieSliceBase):
     pass
+
+
+class AssetBase(BaseModel):
+    id: Optional[int]
+
+    amount: conint(gt=1)
+    buy_value: float
+    currency: str
+
+    description: str
+
+    exchange: str
+    ticker: str
+
+    portfolio_id: int
+
+    created_at: datetime
+    updated_at: datetime
+
+
+class AssetGet(AssetBase):
+    pass
