@@ -11,11 +11,11 @@ class AllocatedPieSlice:
     def __init__(self, orm_session: Session = Depends(get_session)):
         self.orm_session = orm_session
 
-    def _get(self, item_id: int) -> tables.PortfolioAllocatedPieSlice:
+    def _get(self, key: int) -> tables.PortfolioAllocatedPieSlice:
         allocation = (
             self.orm_session
                 .query(tables.PortfolioAllocatedPieSlice)
-                .filter_by(id=item_id)
+                .filter_by(id=key)
                 .first()
         )
 
@@ -44,11 +44,11 @@ class AllocatedPieSlice:
 
         return allocation
 
-    def get(self, item_id) -> tables.PortfolioAllocatedPieSlice:
-        return self._get(item_id=item_id)
+    def get(self, key) -> tables.PortfolioAllocatedPieSlice:
+        return self._get(key=key)
 
-    def update(self, item_id: int, data: schemas.PortfolioAllocatedPieSliceUpdate) -> tables.PortfolioAllocatedPieSlice:
-        allocation = self._get(item_id=item_id)
+    def update(self, key: int, data: schemas.PortfolioAllocatedPieSliceUpdate) -> tables.PortfolioAllocatedPieSlice:
+        allocation = self._get(key=key)
 
         for field, value in data:
             if value is None:
@@ -60,7 +60,7 @@ class AllocatedPieSlice:
 
         return allocation
 
-    def delete(self, item_id: int):
-        allocation = self._get(item_id=item_id)
+    def delete(self, key: int):
+        allocation = self._get(key=key)
         self.orm_session.delete(allocation)
         self.orm_session.commit()

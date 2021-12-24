@@ -33,3 +33,9 @@ class Asset:
                 .query(tables.PortfolioAsset)
                 .all()
         )
+
+    def delete(self, key: int):
+        asset = self._get(key=key)
+
+        self.orm_session.delete(asset)
+        self.orm_session.commit()
