@@ -39,6 +39,35 @@ class EOD:
 
         return f'{datetime_:"%Y-%m-%d"}'
 
+    @staticmethod
+    def get_live_data_endpoint(ticker: str) -> str:
+        return f'https://eodhistoricaldata.com/api/real-time/{ticker}'
+
+    def get_live_data(self, tickers_list: list):
+
+        if len(tickers_list) < 1:
+            raise AttributeError('Ticker list must contain at least one ticker.')
+
+        payload = {
+            'api_token': self.api_token,
+            'fmt': 'json'
+        }
+
+        if len(tickers_list) > 1:
+            payload['s'] = ','.join(tickers_list[1:])
+
+        url = self.get_live_data_endpoint(tickers_list[0])
+
+        request = self.request_session.get(
+            url,
+            json=payload
+        )
+
+        if request.status_code != requests.codes.ok:
+            raise RemoteDataError(request.status_code, request.reason)
+
+        return request.json()
+
     def get_eod_endpoint(self, symbol: str, exchange: str) -> str:
         return f'{self.base_url}/eod/{self._prepare_ticker(symbol, exchange)}'
 

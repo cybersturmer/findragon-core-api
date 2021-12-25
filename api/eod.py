@@ -12,7 +12,11 @@ router = APIRouter(
 async def get(
         service: EOD = Depends()
 ):
-    return service.get_end_of_day_data(
-        exchange='MCX',
-        symbol='SBER'
+    ticker_list = [
+        'SBER.MCX',
+        'GMKN.MCX'
+    ]
+
+    return service.get_live_data(
+        ticker_list
     )
