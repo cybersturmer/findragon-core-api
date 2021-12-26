@@ -16,7 +16,21 @@ class TransactionType(Enum):
 
 class BrokerType(Enum):
     SBER = auto()
-    TCS = auto()
+    INTERACTIVE_BROKERS = auto()
+    FREEDOM_FINANCE = auto()
+    ATON = auto()
+    JUST2TRADE = auto()
+    VANGUARD = auto()
+    TINKOFF = auto()
+    BKS = auto()
+    OTKRITIE = auto()
+    TD_AMERITRADE = auto()
+    WEBULL = auto()
+    VTB = auto()
+    FINAM = auto()
+    ALFA = auto()
+    EXANTE = auto()
+    ROBINHOOD = auto()
 
 
 class PortfolioGoalType(Enum):

@@ -2,7 +2,8 @@ from datetime import datetime
 
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Unicode, Date, Float, DateTime
 from sqlalchemy.orm import relationship, backref
-from sqlalchemy_utils.types import ChoiceType, CurrencyType
+
+from sqlalchemy_utils.types import ChoiceType, CurrencyType, EmailType
 
 from database import Base
 from models.enums import \
@@ -30,7 +31,7 @@ class User(Base):
     )
 
     email = Column(
-        String(255),
+        EmailType,
         nullable=False
     )
 
@@ -85,9 +86,21 @@ class Portfolio(Base):
     )
 
     goal_currency = Column(
-        String,
+        CurrencyType,
         nullable=True
     )
+
+    @property
+    def goal_currency_code(self) -> str:
+        return self.goal_currency.code
+
+    @property
+    def goal_currency_name(self) -> str:
+        return self.goal_currency.name
+
+    @property
+    def goal_currency_symbol(self) -> str:
+        return self.goal_currency.symbol
 
     goal_type = Column(
         ChoiceType(PortfolioGoalType, impl=Integer()),

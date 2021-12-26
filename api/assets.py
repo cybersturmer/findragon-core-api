@@ -29,7 +29,7 @@ async def get_asset(key: int, service: Asset = Depends()):
 @router.post('/',
              response_model=schemas.AssetGet,
              description='Create the asset in portfolio.')
-async def create_asset(data: schemas.AssetCreate, service: Asset = Depends()) -> tables.PortfolioAsset:
+async def create_asset(data: schemas.AssetCreate, service: Asset = Depends()):
     return service.create(
         data
     )
