@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, File
 from sqlalchemy.orm import Session
 
 from database import get_session
@@ -51,6 +51,10 @@ class Asset:
         self.orm_session.commit()
 
         return asset
+
+    def import_xlsx(self, file: File):
+        # @todo Move it to transactions.
+        pass
 
     def delete(self, key: int):
         asset = self._get(key=key)

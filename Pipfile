@@ -12,6 +12,7 @@ python-dotenv = "*"
 alembic = "*"
 requests = "*"
 pandas = "*"
+python-multipart = "*"
 
 [dev-packages]
 

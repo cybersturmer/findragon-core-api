@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, Response, status
+from fastapi import APIRouter, Depends, Response, status, File, UploadFile
 
 from models import schemas, tables
 from services.assets import Asset
@@ -8,6 +8,15 @@ from services.assets import Asset
 router = APIRouter(
     prefix='/assets'
 )
+
+
+@router.post('/import',
+             response_model=schemas.AssetImportResult)
+async def import_assets(
+        service: Asset = Depends(),
+        file: UploadFile = File(...)
+):
+    return service.import_xlsx(file)
 
 
 @router.get('/',

@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional, List, ForwardRef
+from typing import Optional, List, ForwardRef, Dict
 from pydantic import BaseModel, constr, conint, confloat, validator
 from sqlalchemy_utils import CurrencyType, Currency
 
@@ -124,3 +124,16 @@ class AssetGet(AssetBase):
 
 class AssetCreate(AssetBase):
     currency: str
+
+
+class TransactionsImport(AssetBase):
+
+    commissions_amount: conint(ge=0)
+    dividends_amount: conint(ge=0)
+    transactions_amount: conint(ge=0)
+
+    assets_affected: conint(ge=0)
+
+    messages: List[Dict[str, str]]
+
+    success: bool
