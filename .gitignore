@@ -1,0 +1,34 @@
+# IDE list
+.idea
+.ipynb_checkpoints
+.mypy_cache
+.vscode
+
+# Cache
+__pycache__
+.pytest_cache
+
+htmlcov
+dist
+site
+
+.coverage
+coverage.xml
+
+.netlify
+log.txt
+Pipfile.lock
+
+# Environments
+env3.*
+env
+venv
+
+docs_build
+
+# We use to save json examples of data.
+/examples
+
+# vim temporary files
+*~
+.*.sw?
