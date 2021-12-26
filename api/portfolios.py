@@ -17,7 +17,7 @@ async def get_portfolios(
     return service.get_list()
 
 
-@router.post('/', response_model=schemas.PortfolioCreate)
+@router.post('/', response_model=schemas.PortfolioGet)
 async def create_portfolio(
         data: schemas.PortfolioCreate,
         service: Portfolio = Depends()

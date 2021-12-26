@@ -4,7 +4,9 @@ from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from database import get_session
-from models import tables
+from models import tables, schemas
+
+from sqlalchemy_utils import Currency
 
 
 class Asset:
@@ -33,6 +35,22 @@ class Asset:
                 .query(tables.PortfolioAsset)
                 .all()
         )
+
+    def create(self, data: schemas.AssetCreate) -> tables.PortfolioAsset:
+        data_as_dict = data.dict()
+
+        currency = Currency(
+            data_as_dict['currency']
+        )
+
+        data_as_dict['currency'] = currency
+
+        asset = tables.PortfolioAsset(**data_as_dict)
+
+        self.orm_session.add(asset)
+        self.orm_session.commit()
+
+        return asset
 
     def delete(self, key: int):
         asset = self._get(key=key)

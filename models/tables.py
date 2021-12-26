@@ -2,7 +2,7 @@ from datetime import datetime
 
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Unicode, Date, Float, DateTime
 from sqlalchemy.orm import relationship, backref
-from sqlalchemy_utils.types import ChoiceType
+from sqlalchemy_utils.types import ChoiceType, CurrencyType
 
 from database import Base
 from models.enums import \
@@ -339,15 +339,27 @@ class PortfolioAsset(Base):
         nullable=False
     )
 
-    buy_value = Column(
+    price = Column(
         Float,
         nullable=False
     )
 
     currency = Column(
-        String,
+        CurrencyType,
         nullable=False
     )
+
+    @property
+    def currency_code(self) -> str:
+        return self.currency.code
+
+    @property
+    def currency_name(self) -> str:
+        return self.currency.name
+
+    @property
+    def currency_symbol(self) -> str:
+        return self.currency.symbol
 
     description = Column(
         Unicode(255),

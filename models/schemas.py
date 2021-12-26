@@ -1,11 +1,12 @@
 from datetime import datetime
 from typing import Optional, List, ForwardRef
-from pydantic import BaseModel, constr, conint
+from pydantic import BaseModel, constr, conint, confloat, validator
+from sqlalchemy_utils import CurrencyType, Currency
+
 from models.enums import AllocationType, BrokerType, PortfolioGoalType
 
 
 class PortfolioBase(BaseModel):
-    id: Optional[int]
     title: constr(
         strip_whitespace=True,
         min_length=1
@@ -21,9 +22,6 @@ class PortfolioBase(BaseModel):
     goal_type: PortfolioGoalType
     goal_value: int
 
-    created_at: datetime
-    updated_at: datetime
-
     class Config:
         orm_mode = True
 
@@ -33,10 +31,12 @@ class PortfolioCreate(PortfolioBase):
 
 
 class PortfolioGet(PortfolioBase):
-    pass
+    id: int
+    created_at: datetime
+    updated_at: datetime
 
 
-class PortfolioUpdate(PortfolioBase):
+class PortfolioUpdate(PortfolioGet):
     pass
 
 
@@ -97,11 +97,9 @@ class PortfolioAllocatedPieSliceDelete(PortfolioAllocatedPieSliceBase):
 
 
 class AssetBase(BaseModel):
-    id: Optional[int]
-
     amount: conint(gt=1)
-    buy_value: float
-    currency: str
+
+    price: confloat(gt=0.0)
 
     description: str
 
@@ -110,9 +108,19 @@ class AssetBase(BaseModel):
 
     portfolio_id: int
 
+    class Config:
+        orm_mode = True
+
+
+class AssetGet(AssetBase):
+    id: int
+
+    currency_code: str
+    currency_symbol: str
+
     created_at: datetime
     updated_at: datetime
 
 
-class AssetGet(AssetBase):
-    pass
+class AssetCreate(AssetBase):
+    currency: str
