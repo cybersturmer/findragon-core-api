@@ -11,7 +11,7 @@ router = APIRouter(
 
 
 @router.post('/import',
-             response_model=schemas.AssetImportResult)
+             response_model=schemas.TransactionsImportResult)
 async def import_assets(
         service: Asset = Depends(),
         file: UploadFile = File(...)

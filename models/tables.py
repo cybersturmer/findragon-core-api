@@ -224,6 +224,31 @@ class PortfolioAllocatedPieSlice(Base):
         return f'PortfolioAllocatedPieSlice {self.title} - {self.allocation_in_category}'
 
 
+class PortfolioImports(Base):
+    __tablename__ = 'portfolio_imports'
+
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True,
+        autoincrement=True
+    )
+
+    created_at = Column(
+        DateTime,
+        default=datetime.now
+    )
+
+    updated_at = Column(
+        DateTime,
+        default=datetime.now,
+        onupdate=datetime.now
+    )
+
+    def __repr__(self):
+        return f'PortfolioImport {str(self.created_at)}'
+
+
 class PortfolioTransaction(Base):
     __tablename__ = 'portfolio_transactions'
 
@@ -248,13 +273,19 @@ class PortfolioTransaction(Base):
         nullable=False
     )
 
+    import_id = Column(
+        Integer,
+        ForeignKey('portfolio_imports.id'),
+        nullable=True
+    )
+
     commission = Column(
         Float,
         default=0.00
     )
 
     commission_currency = Column(
-        String,
+        CurrencyType,
         nullable=False
     )
 

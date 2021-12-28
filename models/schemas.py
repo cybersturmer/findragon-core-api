@@ -126,7 +126,34 @@ class AssetCreate(AssetBase):
     currency: str
 
 
-class TransactionsImport(AssetBase):
+class TransactionBase(BaseModel):
+    amount: int
+    asset_type: int
+
+    imported: bool
+    import_id: int
+
+    commission: float
+    commission_currency: str
+
+    date: datetime.date
+
+    description: str
+    title: str
+
+    accrued_interest: float
+    price: float
+
+    ticker: str
+    exchange: str
+
+    total_price: float
+    type: int
+
+    portfolio_id: int
+
+
+class TransactionsImportResult(AssetBase):
 
     commissions_amount: conint(ge=0)
     dividends_amount: conint(ge=0)
