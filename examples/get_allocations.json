@@ -71,6 +71,19 @@
     "parent_id": null,
     "id": 2,
     "portfolio_ratio": 4000,
-    "children": []
+    "children": [
+      {
+        "type": 1,
+        "title": "FinEx Rus Eurobonds ETF (USD)",
+        "portfolio_id": 1,
+        "category_ratio": 10000,
+        "asset_ticker": "FXRU",
+        "exchange_code": "MCX",
+        "parent_id": 2,
+        "id": 7,
+        "portfolio_ratio": 4000,
+        "children": []
+      }
+    ]
   }
 ]
