@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 from typing import Optional, List, ForwardRef, Dict
 from pydantic import BaseModel, constr, conint, confloat, validator
 from sqlalchemy_utils import CurrencyType, Currency
@@ -18,7 +18,6 @@ class PortfolioBase(BaseModel):
 
     broker: BrokerType
 
-    goal_currency: str
     goal_type: PortfolioGoalType
     goal_value: int
 
@@ -27,13 +26,16 @@ class PortfolioBase(BaseModel):
 
 
 class PortfolioCreate(PortfolioBase):
-    pass
+    goal_currency: str
 
 
 class PortfolioGet(PortfolioBase):
     id: int
     created_at: datetime
     updated_at: datetime
+
+    goal_currency_code: str
+    goal_currency_symbol: str
 
 
 class PortfolioUpdate(PortfolioGet):
@@ -136,7 +138,7 @@ class TransactionBase(BaseModel):
     commission: float
     commission_currency: str
 
-    date: datetime.date
+    date: date
 
     description: str
     title: str

@@ -22,6 +22,9 @@ async def create_portfolio(
         data: schemas.PortfolioCreate,
         service: Portfolio = Depends()
 ):
+    """
+    Goal_type: 0 - Grow, 1 - Income
+    """
     return service.create(
         data
     )

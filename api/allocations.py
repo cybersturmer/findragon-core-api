@@ -23,6 +23,9 @@ async def create_allocation(
         data: schemas.PortfolioAllocatedPieSliceCreate,
         service: AllocatedPieSlice = Depends()
 ):
+    """
+    Type: 0 - Asset, 1 - Category, 2 - Currency
+    """
     return service.create(
         data
     )
