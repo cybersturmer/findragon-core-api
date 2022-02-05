@@ -38,6 +38,8 @@ class AllocatedPieSlice:
         if allocation.parent_id is not None:
             parent = self._get(allocation.parent_id)
             allocation.portfolio_ratio = parent.portfolio_ratio / 100 * allocation.category_ratio
+        else:
+            allocation.portfolio_ratio = allocation.category_ratio
 
         self.orm_session.add(allocation)
         self.orm_session.commit()
