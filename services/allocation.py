@@ -37,7 +37,7 @@ class AllocatedPieSlice:
 
         if allocation.parent_id is not None:
             parent = self._get(allocation.parent_id)
-            allocation.portfolio_ratio = parent.portfolio_ratio / 100 * allocation.category_ratio
+            allocation.portfolio_ratio = parent.portfolio_ratio * allocation.category_ratio / 100 ** 2
         else:
             allocation.portfolio_ratio = allocation.category_ratio
 
