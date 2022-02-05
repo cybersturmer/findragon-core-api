@@ -1,46 +1,76 @@
 [
   {
-    "type": 2,
-    "title": "Indexed",
+    "type": 1,
+    "title": "Shares",
     "portfolio_id": 1,
-    "portfolio_ratio": 30,
-    "category_ratio": 100,
+    "category_ratio": 6000,
     "asset_ticker": null,
     "exchange_code": null,
     "parent_id": null,
-    "id": 1
+    "id": 1,
+    "portfolio_ratio": 6000,
+    "children": [
+      {
+        "type": 1,
+        "title": "Developed markets",
+        "portfolio_id": 1,
+        "category_ratio": 3000,
+        "asset_ticker": null,
+        "exchange_code": null,
+        "parent_id": 1,
+        "id": 3,
+        "portfolio_ratio": 1800,
+        "children": []
+      },
+      {
+        "type": 1,
+        "title": "Emerging markets",
+        "portfolio_id": 1,
+        "category_ratio": 7000,
+        "asset_ticker": null,
+        "exchange_code": null,
+        "parent_id": 1,
+        "id": 4,
+        "portfolio_ratio": 4200,
+        "children": [
+          {
+            "type": 1,
+            "title": "FINEX EM EX-CHINDIA UCITS ETF",
+            "portfolio_id": 1,
+            "category_ratio": 8000,
+            "asset_ticker": "FXEM",
+            "exchange_code": "MCX",
+            "parent_id": 4,
+            "id": 5,
+            "portfolio_ratio": 3360,
+            "children": []
+          },
+          {
+            "type": 1,
+            "title": "FINEX CHINA UCITS ETF",
+            "portfolio_id": 1,
+            "category_ratio": 2000,
+            "asset_ticker": "FXCN",
+            "exchange_code": "MCX",
+            "parent_id": 4,
+            "id": 6,
+            "portfolio_ratio": 840,
+            "children": []
+          }
+        ]
+      }
+    ]
   },
   {
-    "type": 2,
+    "type": 1,
     "title": "Bonds",
     "portfolio_id": 1,
-    "portfolio_ratio": 70,
-    "category_ratio": 100,
+    "category_ratio": 4000,
     "asset_ticker": null,
     "exchange_code": null,
     "parent_id": null,
-    "id": 2
-  },
-  {
-    "type": 2,
-    "title": "RU000A100HE1",
-    "portfolio_id": 1,
-    "portfolio_ratio": 70,
-    "category_ratio": 100,
-    "asset_ticker": "RU000A100HE1",
-    "exchange_code": "MCX",
-    "parent_id": 2,
-    "id": 3
-  },
-  {
-    "type": 2,
-    "title": "SBER",
-    "portfolio_id": 1,
-    "portfolio_ratio": 30,
-    "category_ratio": 100,
-    "asset_ticker": "SBER",
-    "exchange_code": "MCX",
-    "parent_id": 2,
-    "id": 4
+    "id": 2,
+    "portfolio_ratio": 4000,
+    "children": []
   }
 ]
