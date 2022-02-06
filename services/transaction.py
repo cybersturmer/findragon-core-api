@@ -37,6 +37,6 @@ class Transaction:
         self.orm_session.add(transaction)
         self.orm_session.commit()
 
-    def create(self, data: schemas.PortfolioT):
+    def update(self, data: schemas.TransactionBase):
         pass
 
