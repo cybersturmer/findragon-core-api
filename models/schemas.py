@@ -12,15 +12,6 @@ class PortfolioBase(BaseModel):
         min_length=1
     )
 
-    apply_taxes_on_income: bool
-
-    tax_percent: conint(ge=0, le=100)
-
-    broker: BrokerType
-
-    goal_type: PortfolioGoalType
-    goal_value: int
-
     class Config:
         orm_mode = True
 

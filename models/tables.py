@@ -70,48 +70,6 @@ class Portfolio(Base):
         nullable=False
     )
 
-    apply_taxes_on_income = Column(
-        Boolean,
-        default=False
-    )
-
-    tax_percent = Column(
-        Integer,
-        default=0
-    )
-
-    broker = Column(
-        ChoiceType(BrokerType, impl=Integer()),
-        nullable=False
-    )
-
-    goal_currency = Column(
-        CurrencyType,
-        nullable=True
-    )
-
-    @property
-    def goal_currency_code(self) -> str:
-        return self.goal_currency.code
-
-    @property
-    def goal_currency_name(self) -> str:
-        return self.goal_currency.name
-
-    @property
-    def goal_currency_symbol(self) -> str:
-        return self.goal_currency.symbol
-
-    goal_type = Column(
-        ChoiceType(PortfolioGoalType, impl=Integer()),
-        nullable=True
-    )
-
-    goal_value = Column(
-        Integer,
-        default=0
-    )
-
     user_id = Column(
         Integer,
         ForeignKey('users.id')
@@ -147,33 +105,6 @@ class PortfolioAsset(Base):
         index=True,
         autoincrement=True
     )
-
-    amount = Column(
-        Integer,
-        nullable=False
-    )
-
-    price = Column(
-        Float,
-        nullable=False
-    )
-
-    currency = Column(
-        CurrencyType,
-        nullable=False
-    )
-
-    @property
-    def currency_code(self) -> str:
-        return self.currency.code
-
-    @property
-    def currency_name(self) -> str:
-        return self.currency.name
-
-    @property
-    def currency_symbol(self) -> str:
-        return self.currency.symbol
 
     description = Column(
         Unicode(255),
@@ -402,11 +333,6 @@ class PortfolioTransaction(Base):
         default=0.00
     )
 
-    price = Column(
-        Float,
-        default=0.00
-    )
-
     asset_id = Column(
         Integer,
         ForeignKey('portfolio_assets.id'),
@@ -415,7 +341,7 @@ class PortfolioTransaction(Base):
 
     asset = relationship(
         PortfolioAsset,
-        backref=backref('allocations'),
+        backref=backref('asset_allocation'),
         order_by=id
     )
 
@@ -434,7 +360,7 @@ class PortfolioTransaction(Base):
 
     portfolio = relationship(
         Portfolio,
-        backref=backref('transactions'),
+        backref=backref('portfolio_transactions'),
         order_by=id
     )
 
@@ -445,7 +371,7 @@ class PortfolioTransaction(Base):
 
     user = relationship(
         User,
-        backref=backref('transactions'),
+        backref=backref('user_transactions'),
         order_by=id
     )
 
