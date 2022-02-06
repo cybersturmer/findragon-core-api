@@ -191,7 +191,8 @@ class PortfolioAsset(Base):
     )
 
     portfolio_id = Column(
-        Integer, ForeignKey('portfolio.id')
+        Integer,
+        ForeignKey('portfolio.id')
     )
 
     portfolio = relationship(
@@ -291,7 +292,8 @@ class PortfolioAllocatedPieSlice(Base):
     )
 
     user_id = Column(
-        Integer, ForeignKey('users.id')
+        Integer,
+        ForeignKey('users.id')
     )
 
     user = relationship(
@@ -437,7 +439,8 @@ class PortfolioTransaction(Base):
     )
 
     user_id = Column(
-        Integer, ForeignKey('users.id')
+        Integer,
+        ForeignKey('users.id')
     )
 
     user = relationship(
