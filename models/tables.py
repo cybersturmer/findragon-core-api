@@ -113,7 +113,8 @@ class Portfolio(Base):
     )
 
     user_id = Column(
-        Integer, ForeignKey('users.id')
+        Integer,
+        ForeignKey('users.id')
     )
 
     user = relationship(
@@ -137,6 +138,93 @@ class Portfolio(Base):
         return f'Portfolio ({self.id})'
 
 
+class PortfolioAsset(Base):
+    __tablename__ = 'portfolio_assets'
+
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True,
+        autoincrement=True
+    )
+
+    amount = Column(
+        Integer,
+        nullable=False
+    )
+
+    price = Column(
+        Float,
+        nullable=False
+    )
+
+    currency = Column(
+        CurrencyType,
+        nullable=False
+    )
+
+    @property
+    def currency_code(self) -> str:
+        return self.currency.code
+
+    @property
+    def currency_name(self) -> str:
+        return self.currency.name
+
+    @property
+    def currency_symbol(self) -> str:
+        return self.currency.symbol
+
+    description = Column(
+        Unicode(255),
+        default=''
+    )
+
+    exchange = Column(
+        String,
+        nullable=False
+    )
+
+    ticker = Column(
+        String,
+        nullable=False
+    )
+
+    portfolio_id = Column(
+        Integer, ForeignKey('portfolio.id')
+    )
+
+    portfolio = relationship(
+        Portfolio,
+        backref=backref('assets'),
+        order_by=id
+    )
+
+    user_id = Column(
+        Integer, ForeignKey('users.id')
+    )
+
+    user = relationship(
+        User,
+        backref=backref('assets'),
+        order_by=id
+    )
+
+    created_at = Column(
+        DateTime,
+        default=datetime.now
+    )
+
+    updated_at = Column(
+        DateTime,
+        default=datetime.now,
+        onupdate=datetime.now
+    )
+
+    def __repr__(self):
+        return f'PortfolioAsset {self.id} - {self.ticker} / {self.amount} '
+
+
 class PortfolioAllocatedPieSlice(Base):
     __tablename__ = "portfolio_allocated_pie_slices"
 
@@ -158,7 +246,8 @@ class PortfolioAllocatedPieSlice(Base):
     )
 
     portfolio_id = Column(
-        Integer, ForeignKey('portfolio.id'),
+        Integer,
+        ForeignKey('portfolio.id'),
         nullable=False
     )
 
@@ -178,14 +267,16 @@ class PortfolioAllocatedPieSlice(Base):
         default=0
     )
 
-    asset_ticker = Column(
-        String,
-        nullable=True
+    asset_id = Column(
+        Integer,
+        ForeignKey('portfolio_assets.id'),
+        nullable=False
     )
 
-    exchange_code = Column(
-        String,
-        nullable=True
+    asset = relationship(
+        PortfolioAsset,
+        backref=backref('allocations'),
+        order_by=id
     )
 
     parent_id = Column(
@@ -314,14 +405,16 @@ class PortfolioTransaction(Base):
         default=0.00
     )
 
-    ticker = Column(
-        String,
+    asset_id = Column(
+        Integer,
+        ForeignKey('portfolio_assets.id'),
         nullable=False
     )
 
-    exchange = Column(
-        String,
-        nullable=False
+    asset = relationship(
+        PortfolioAsset,
+        backref=backref('allocations'),
+        order_by=id
     )
 
     total_price = Column(
@@ -366,90 +459,3 @@ class PortfolioTransaction(Base):
 
     def __repr__(self):
         return f'PortfolioTransaction {self.id} - {TransactionType(self.type).name} - {self.ticker}'
-
-
-class PortfolioAsset(Base):
-    __tablename__ = 'portfolio_assets'
-
-    id = Column(
-        Integer,
-        primary_key=True,
-        index=True,
-        autoincrement=True
-    )
-
-    amount = Column(
-        Integer,
-        nullable=False
-    )
-
-    price = Column(
-        Float,
-        nullable=False
-    )
-
-    currency = Column(
-        CurrencyType,
-        nullable=False
-    )
-
-    @property
-    def currency_code(self) -> str:
-        return self.currency.code
-
-    @property
-    def currency_name(self) -> str:
-        return self.currency.name
-
-    @property
-    def currency_symbol(self) -> str:
-        return self.currency.symbol
-
-    description = Column(
-        Unicode(255),
-        default=''
-    )
-
-    exchange = Column(
-        String,
-        nullable=False
-    )
-
-    ticker = Column(
-        String,
-        nullable=False
-    )
-
-    portfolio_id = Column(
-        Integer, ForeignKey('portfolio.id')
-    )
-
-    portfolio = relationship(
-        Portfolio,
-        backref=backref('assets'),
-        order_by=id
-    )
-
-    user_id = Column(
-        Integer, ForeignKey('users.id')
-    )
-
-    user = relationship(
-        User,
-        backref=backref('assets'),
-        order_by=id
-    )
-
-    created_at = Column(
-        DateTime,
-        default=datetime.now
-    )
-
-    updated_at = Column(
-        DateTime,
-        default=datetime.now,
-        onupdate=datetime.now
-    )
-
-    def __repr__(self):
-        return f'PortfolioAsset {self.id} - {self.ticker} / {self.amount} '
