@@ -17,16 +17,13 @@ class PortfolioBase(BaseModel):
 
 
 class PortfolioCreate(PortfolioBase):
-    goal_currency: str
+    pass
 
 
 class PortfolioGet(PortfolioBase):
     id: int
     created_at: datetime
     updated_at: datetime
-
-    goal_currency_code: str
-    goal_currency_symbol: str
 
 
 class PortfolioUpdate(PortfolioGet):
@@ -90,10 +87,6 @@ class PortfolioAllocatedPieSliceDelete(PortfolioAllocatedPieSliceBase):
 
 
 class AssetBase(BaseModel):
-    amount: conint(gt=1)
-
-    price: confloat(gt=0.0)
-
     description: str
 
     exchange: str
@@ -108,15 +101,12 @@ class AssetBase(BaseModel):
 class AssetGet(AssetBase):
     id: int
 
-    currency_code: str
-    currency_symbol: str
-
     created_at: datetime
     updated_at: datetime
 
 
 class AssetCreate(AssetBase):
-    currency: str
+    pass
 
 
 class TransactionBase(BaseModel):

@@ -39,12 +39,6 @@ class Asset:
     def create(self, data: schemas.AssetCreate) -> tables.PortfolioAsset:
         data_as_dict = data.dict()
 
-        currency = Currency(
-            data_as_dict['currency']
-        )
-
-        data_as_dict['currency'] = currency
-
         asset = tables.PortfolioAsset(**data_as_dict)
 
         self.orm_session.add(asset)
