@@ -276,7 +276,7 @@ class PortfolioTransaction(Base):
         default=0.00
     )
 
-    commission_currency = Column(
+    currency = Column(
         CurrencyType,
         nullable=False
     )
