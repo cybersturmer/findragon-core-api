@@ -4,7 +4,6 @@ from fastapi import Depends, HTTPException, status
 
 from database import Session, get_session
 from models import tables, schemas
-from services import assets
 
 
 class Transaction:
