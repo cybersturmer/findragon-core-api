@@ -6,8 +6,6 @@ from sqlalchemy.orm import Session
 from database import get_session
 from models import tables, schemas
 
-from sqlalchemy_utils import Currency
-
 
 class Asset:
     def __init__(self, orm_session: Session = Depends(get_session)):
