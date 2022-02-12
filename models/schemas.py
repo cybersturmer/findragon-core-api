@@ -1,7 +1,7 @@
 from datetime import date, datetime
-from typing import Optional, List, ForwardRef, Dict
-from pydantic import BaseModel, constr, conint, confloat, validator
-from sqlalchemy_utils import CurrencyType, Currency
+from typing import Optional, List, Dict
+
+from pydantic import BaseModel, constr, conint, confloat
 
 from models import enums
 
