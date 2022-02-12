@@ -7,8 +7,6 @@ from sqlalchemy_utils.types import ChoiceType, CurrencyType, EmailType
 
 from database import Base
 from models.enums import \
-    BrokerType, \
-    PortfolioGoalType, \
     AllocationType, \
     AssetType, \
     TransactionType
@@ -70,17 +68,6 @@ class Portfolio(Base):
         nullable=False
     )
 
-    user_id = Column(
-        Integer,
-        ForeignKey('users.id')
-    )
-
-    user = relationship(
-        User,
-        backref=backref('portfolios'),
-        order_by=id
-    )
-
     created_at = Column(
         DateTime,
         default=datetime.now
@@ -128,16 +115,6 @@ class PortfolioAsset(Base):
 
     portfolio = relationship(
         Portfolio,
-        backref=backref('assets'),
-        order_by=id
-    )
-
-    user_id = Column(
-        Integer, ForeignKey('users.id')
-    )
-
-    user = relationship(
-        User,
         backref=backref('assets'),
         order_by=id
     )
@@ -222,17 +199,6 @@ class PortfolioAllocatedPieSlice(Base):
         backref=backref('parent', remote_side=[id])
     )
 
-    user_id = Column(
-        Integer,
-        ForeignKey('users.id')
-    )
-
-    user = relationship(
-        User,
-        backref=backref('allocated_pie_slices'),
-        order_by=id
-    )
-
     created_at = Column(
         DateTime,
         default=datetime.now
@@ -295,7 +261,6 @@ class PortfolioTransaction(Base):
     # Imported or manually added
     imported = Column(
         Boolean,
-        nullable=False,
         default=False
     )
 
@@ -352,7 +317,7 @@ class PortfolioTransaction(Base):
 
     total_price = Column(
         Float,
-        default=0.00
+        nullable=False
     )
 
     type = Column(
@@ -367,18 +332,6 @@ class PortfolioTransaction(Base):
     portfolio = relationship(
         Portfolio,
         backref=backref('portfolio_transactions'),
-        order_by=id
-    )
-
-    # User assignment
-    user_id = Column(
-        Integer,
-        ForeignKey('users.id')
-    )
-
-    user = relationship(
-        User,
-        backref=backref('user_transactions'),
         order_by=id
     )
 
