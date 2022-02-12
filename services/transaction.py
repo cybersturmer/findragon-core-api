@@ -4,6 +4,7 @@ from fastapi import Depends, HTTPException, status
 
 from database import Session, get_session
 from models import tables, schemas
+from services import assets
 
 
 class Transaction:
@@ -33,9 +34,50 @@ class Transaction:
             .all()
         )
 
-    def _create(self, transaction: tables.PortfolioTransaction):
+    def create(self, data: schemas.TransactionBase) -> tables.PortfolioTransaction:
+        transaction_data = data.dict()
+
+        ticker = transaction_data.pop('ticker')
+        exchange = transaction_data.pop('exchange')
+
+        portfolio_id = transaction_data['portfolio_id']
+
+        asset = (
+            self.orm_session
+            .query(tables.PortfolioAsset)
+            .filter_by(
+                ticker=ticker,
+                exchange=exchange
+            )
+            .first()
+        )
+
+        # Let's add asset if it not exists yet
+        if not asset:
+            asset = tables.PortfolioAsset(
+                **dict(
+                    ticker=ticker,
+                    exchange=exchange,
+                    portfolio_id=portfolio_id
+                )
+            )
+
+            self.orm_session.add(asset)
+            self.orm_session.commit()
+
+        transaction = tables.PortfolioTransaction(**transaction_data)
+
+        transaction.total_price = transaction.amount * transaction.price
+
+        transaction.imported = False
+        transaction.import_id = None
+
+        transaction.asset_id = asset.id
+
         self.orm_session.add(transaction)
         self.orm_session.commit()
+
+        return transaction
 
     def update(self, data: schemas.TransactionBase):
         pass
