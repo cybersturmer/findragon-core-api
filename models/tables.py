@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Unicode, Date, Float, DateTime
 from sqlalchemy.orm import relationship, backref
@@ -285,16 +285,18 @@ class PortfolioTransaction(Base):
 
     amount = Column(
         Integer,
-        default=0
+        default=1
     )
 
     asset_type = Column(
         ChoiceType(AssetType, impl=Integer())
     )
 
+    # Imported or manually added
     imported = Column(
         Boolean,
-        nullable=False
+        nullable=False,
+        default=False
     )
 
     import_id = Column(
@@ -303,6 +305,7 @@ class PortfolioTransaction(Base):
         nullable=True
     )
 
+    # Commission information
     commission = Column(
         Float,
         default=0.00
@@ -310,11 +313,6 @@ class PortfolioTransaction(Base):
 
     commission_currency = Column(
         CurrencyType,
-        nullable=False
-    )
-
-    date = Column(
-        Date,
         nullable=False
     )
 
@@ -328,9 +326,10 @@ class PortfolioTransaction(Base):
         default=''
     )
 
+    # Only for bonds
     accrued_interest = Column(
         Float,
-        default=0.00
+        nullable=True
     )
 
     asset_id = Column(
@@ -345,6 +344,12 @@ class PortfolioTransaction(Base):
         order_by=id
     )
 
+    # Price per lot and total
+    price = Column(
+        Float,
+        nullable=False
+    )
+
     total_price = Column(
         Float,
         default=0.00
@@ -354,6 +359,7 @@ class PortfolioTransaction(Base):
         ChoiceType(TransactionType, impl=Integer())
     )
 
+    # Portfolio assignment
     portfolio_id = Column(
         Integer, ForeignKey('portfolio.id')
     )
@@ -364,6 +370,7 @@ class PortfolioTransaction(Base):
         order_by=id
     )
 
+    # User assignment
     user_id = Column(
         Integer,
         ForeignKey('users.id')
@@ -373,6 +380,13 @@ class PortfolioTransaction(Base):
         User,
         backref=backref('user_transactions'),
         order_by=id
+    )
+
+    # Date of the transaction
+    date = Column(
+        Date,
+        nullable=False,
+        default=date.today()
     )
 
     created_at = Column(
