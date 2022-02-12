@@ -156,6 +156,10 @@ class TransactionCreate(TransactionBase):
     currency: str
 
 
+class TransactionUpdate(TransactionCreate):
+    pass
+
+
 class TransactionsImportResult(AssetBase):
     commissions_amount: conint(ge=0)
     dividends_amount: conint(ge=0)
