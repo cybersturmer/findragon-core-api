@@ -85,6 +85,23 @@ class Transaction:
         self.orm_session.delete(transaction)
         self.orm_session.commit()
 
-    def update(self, data: schemas.TransactionBase):
-        pass
+    def update(self,
+               key: int,
+               data: schemas.TransactionUpdate) -> tables.PortfolioTransaction:
+
+        transaction = self._get(key=key)
+
+        for field, value in data:
+            if value is None:
+                continue
+
+            setattr(transaction, field, value)
+
+        transaction.total_price = transaction.amount * transaction.price
+
+        transaction.imported = False
+
+        self.orm_session.commit()
+
+        return transaction
 
