@@ -3,7 +3,7 @@ from typing import Optional, List, ForwardRef, Dict
 from pydantic import BaseModel, constr, conint, confloat, validator
 from sqlalchemy_utils import CurrencyType, Currency
 
-from models.enums import AllocationType, BrokerType, PortfolioGoalType
+from models import enums
 
 
 class PortfolioBase(BaseModel):
@@ -35,7 +35,7 @@ class PortfolioDelete(PortfolioBase):
 
 
 class PortfolioAllocatedPieSliceBase(BaseModel):
-    type: AllocationType
+    type: enums.AllocationType
     title: constr(
         strip_whitespace=True,
         min_length=1
@@ -87,7 +87,7 @@ class PortfolioAllocatedPieSliceDelete(PortfolioAllocatedPieSliceBase):
 
 
 class AssetBase(BaseModel):
-    description: str
+    description: Optional[str] = ''
 
     exchange: str
     ticker: str
@@ -110,34 +110,53 @@ class AssetCreate(AssetBase):
 
 
 class TransactionBase(BaseModel):
-    amount: int
-    asset_type: int
+    amount: conint(ge=1)
 
-    imported: bool
-    import_id: int
+    asset_type: enums.AssetType
 
-    commission: float
-    commission_currency: str
+    commission: confloat(ge=0.0)
+
+    description: str = ''
+    title: str = ''
+
+    accrued_interest: Optional[float]  # For bonds only
+
+    price: confloat(ge=0.0)
+
+    type: enums.TransactionType
 
     date: date
 
-    description: str
-    title: str
+    portfolio_id: int
 
-    accrued_interest: float
-    price: float
+    class Config:
+        orm_mode = True
 
+
+class TransactionGet(TransactionBase):
+    id: int
+
+    imported: bool = False
+    import_id: Optional[int] = None
+
+    total_price: int
+
+    @property
+    def currency_code(self) -> str:
+        return self.currency.code
+
+    created_at: datetime
+    updated_at: datetime
+
+
+class TransactionCreate(TransactionBase):
     ticker: str
     exchange: str
 
-    total_price: float
-    type: int
-
-    portfolio_id: int
+    currency: str
 
 
 class TransactionsImportResult(AssetBase):
-
     commissions_amount: conint(ge=0)
     dividends_amount: conint(ge=0)
     transactions_amount: conint(ge=0)
