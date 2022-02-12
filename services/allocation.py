@@ -62,7 +62,7 @@ class AllocatedPieSlice:
 
         return allocation
 
-    def delete(self, key: int):
+    def delete(self, key: int) -> None:
         allocation = self._get(key=key)
         self.orm_session.delete(allocation)
         self.orm_session.commit()
