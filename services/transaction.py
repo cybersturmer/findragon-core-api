@@ -79,7 +79,7 @@ class Transaction:
 
         return transaction
 
-    def delete(self, key: int):
+    def delete(self, key: int) -> None:
         transaction = self._get(key=key)
 
         self.orm_session.delete(transaction)
