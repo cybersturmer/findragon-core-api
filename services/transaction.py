@@ -79,6 +79,12 @@ class Transaction:
 
         return transaction
 
+    def delete(self, key: int):
+        transaction = self._get(key=key)
+
+        self.orm_session.delete(transaction)
+        self.orm_session.commit()
+
     def update(self, data: schemas.TransactionBase):
         pass
 
