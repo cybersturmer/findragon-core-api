@@ -7,6 +7,7 @@ router = APIRouter(
     prefix='/transactions'
 )
 
+
 @router.get('/', response_model=List[schemas.TransactionBase])
 async def get_transactions(
         service: Transaction = Depends()
@@ -37,7 +38,7 @@ async def get_transaction(
 @router.put('/{key}', response_model=schemas.TransactionBase)
 async def update_transaction(
         key: int,
-        data: schemas.TransactionBase,
+        data: schemas.TransactionUpdate,
         service: Transaction = Depends()
 ):
     return service.update(
