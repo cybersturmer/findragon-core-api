@@ -1,7 +1,7 @@
 from typing import List
 from fastapi import APIRouter, Depends, Response, status
 from models import schemas
-from services.transaction import Transaction
+from services.transactions import Transaction
 
 router = APIRouter(
     prefix='/transactions'

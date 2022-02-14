@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends, Response, status
 
 from models import schemas
-from services.allocation import AllocatedPieSlice
+from services.allocations import AllocatedPieSlice
 
 
 router = APIRouter(

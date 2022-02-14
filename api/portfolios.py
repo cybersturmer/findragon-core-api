@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends, Response, status
 
 from models import schemas
-from services.portfolio import Portfolio
+from services.portfolios import Portfolio
 
 router = APIRouter(
     prefix='/portfolios'
