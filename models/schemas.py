@@ -34,58 +34,6 @@ class PortfolioDelete(PortfolioBase):
     pass
 
 
-class PortfolioAllocatedPieSliceBase(BaseModel):
-    type: enums.AllocationType
-    title: constr(
-        strip_whitespace=True,
-        min_length=1
-    )
-
-    portfolio_id: Optional[int] = None
-
-    category_ratio: conint(
-        ge=100,
-        le=10000
-    )
-
-    asset_ticker: Optional[
-        constr(min_length=1)
-    ]
-
-    exchange_code: Optional[
-        constr(min_length=1)
-    ]
-
-    parent_id: Optional[int]
-
-    class Config:
-        orm_mode = True
-
-
-class PortfolioAllocatedPieSliceGet(PortfolioAllocatedPieSliceBase):
-    id: int
-    portfolio_ratio: conint(ge=100, le=10000)
-    children: List['PortfolioAllocatedPieSliceGet']
-
-
-PortfolioAllocatedPieSliceGet.update_forward_refs()
-
-
-class PortfolioAllocatedPieSliceCreate(PortfolioAllocatedPieSliceBase):
-    pass
-
-
-class PortfolioAllocatedPieSliceUpdate(BaseModel):
-    title: Optional[constr(min_length=1)]
-
-    portfolio_ratio: Optional[conint(ge=100, le=10000)]
-    category_ratio: Optional[conint(ge=100, le=10000)]
-
-
-class PortfolioAllocatedPieSliceDelete(PortfolioAllocatedPieSliceBase):
-    pass
-
-
 class AssetBase(BaseModel):
     description: Optional[str] = ''
 
@@ -105,7 +53,70 @@ class AssetGet(AssetBase):
     updated_at: datetime
 
 
+class AssetShort(BaseModel):
+    ticker: str
+    exchange: str
+
+    description: str
+
+    class Config:
+        orm_mode = True
+
+
 class AssetCreate(AssetBase):
+    pass
+
+
+class PortfolioAllocatedPieSliceBase(BaseModel):
+    type: enums.AllocationType
+    title: constr(
+        strip_whitespace=True,
+        min_length=1
+    )
+
+    portfolio_id: Optional[int] = None
+
+    category_ratio: conint(
+        ge=100,
+        le=10000
+    )
+
+    parent_id: Optional[int]
+
+    class Config:
+        orm_mode = True
+
+
+class PortfolioAllocatedPieSliceGet(PortfolioAllocatedPieSliceBase):
+    id: int
+    portfolio_ratio: conint(ge=100, le=10000)
+
+    asset: Optional['AssetShort']
+
+    children: List['PortfolioAllocatedPieSliceGet']
+
+
+PortfolioAllocatedPieSliceGet.update_forward_refs()
+
+
+class PortfolioAllocatedPieSliceCreate(PortfolioAllocatedPieSliceBase):
+    ticker: Optional[
+        constr(min_length=1)
+    ]
+
+    exchange: Optional[
+        constr(min_length=1)
+    ]
+
+
+class PortfolioAllocatedPieSliceUpdate(BaseModel):
+    title: Optional[constr(min_length=1)]
+
+    portfolio_ratio: Optional[conint(ge=100, le=10000)]
+    category_ratio: Optional[conint(ge=100, le=10000)]
+
+
+class PortfolioAllocatedPieSliceDelete(PortfolioAllocatedPieSliceBase):
     pass
 
 
