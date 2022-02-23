@@ -179,7 +179,7 @@ class PortfolioAllocatedPieSlice(Base):
     asset_id = Column(
         Integer,
         ForeignKey('portfolio_assets.id'),
-        nullable=False
+        nullable=True
     )
 
     asset = relationship(
