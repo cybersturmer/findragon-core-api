@@ -24,14 +24,17 @@ class Asset:
 
         return asset
 
-    def get(self, key: int) -> tables.PortfolioAsset:
+    def get(
+            self,
+            key: int
+    ) -> tables.PortfolioAsset:
         return self._get(key)
 
     def get_list(self) -> List[tables.PortfolioAsset]:
         return (
             self.orm_session
-                .query(tables.PortfolioAsset)
-                .all()
+            .query(tables.PortfolioAsset)
+            .all()
         )
 
     def create(self, data: schemas.AssetCreate) -> tables.PortfolioAsset:
