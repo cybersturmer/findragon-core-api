@@ -60,6 +60,9 @@ class AllocatedPieSlice:
                 )
             )
 
+            self.orm_session.add(asset)
+            self.orm_session.commit()
+
         allocation_data['asset_id'] = asset.id
 
         allocation = tables.PortfolioAllocatedPieSlice(**allocation_data)
