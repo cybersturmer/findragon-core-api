@@ -46,7 +46,8 @@ class Transaction:
             .query(tables.PortfolioAsset)
             .filter_by(
                 ticker=ticker,
-                exchange=exchange
+                exchange=exchange,
+                portfolio_id=portfolio_id
             )
             .first()
         )
