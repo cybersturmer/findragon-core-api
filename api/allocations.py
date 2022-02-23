@@ -18,13 +18,13 @@ async def get_allocations(
     return service.get_list()
 
 
-@router.post('/', response_model=schemas.PortfolioAllocatedPieSliceCreate)
+@router.post('/', response_model=schemas.PortfolioAllocatedPieSliceGet)
 async def create_allocation(
         data: schemas.PortfolioAllocatedPieSliceCreate,
         service: AllocatedPieSlice = Depends()
 ):
     """
-    Type: 0 - Asset, 1 - Category, 2 - Currency
+    Type: 1 - Asset, 2 - Category, 3 - Currency
     """
     return service.create(
         data
