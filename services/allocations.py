@@ -33,10 +33,41 @@ class AllocatedPieSlice:
         )
 
     def create(self, data: schemas.PortfolioAllocatedPieSliceCreate) -> tables.PortfolioAllocatedPieSlice:
-        allocation = tables.PortfolioAllocatedPieSlice(**data.dict())
+        allocation_data = data.dict()
+
+        ticker = allocation_data.pop('ticker')
+        exchange = allocation_data.pop('exchange')
+
+        portfolio_id = allocation_data['portfolio_id']
+
+        asset = (
+            self.orm_session
+            .query(tables.PortfolioAsset)
+            .filter_by(
+                ticker=ticker,
+                exchange=exchange,
+                portfolio_id=portfolio_id
+            )
+            .first()
+        )
+
+        if not asset:
+            asset = tables.PortfolioAsset(
+                **dict(
+                    ticker=ticker,
+                    exchange=exchange,
+                    portfolio_id=portfolio_id
+                )
+            )
+
+        allocation_data['asset_id'] = asset.id
+
+        allocation = tables.PortfolioAllocatedPieSlice(**allocation_data)
 
         if allocation.parent_id is not None:
             parent = self._get(allocation.parent_id)
+            # @todo What if parent does not exists
+
             allocation.portfolio_ratio = parent.portfolio_ratio * allocation.category_ratio / 100 ** 2
         else:
             allocation.portfolio_ratio = allocation.category_ratio
