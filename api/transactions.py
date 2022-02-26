@@ -8,7 +8,7 @@ router = APIRouter(
 )
 
 
-@router.get('/', response_model=List[schemas.TransactionBase])
+@router.get('/', response_model=List[schemas.TransactionGet])
 async def get_transactions(
         service: Transaction = Depends()
 ):
