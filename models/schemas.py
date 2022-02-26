@@ -147,6 +147,8 @@ class TransactionBase(BaseModel):
 class TransactionGet(TransactionBase):
     id: int
 
+    asset: Optional['AssetShort']
+
     imported: bool = False
     import_id: Optional[int] = None
 
