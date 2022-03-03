@@ -40,30 +40,34 @@ class AllocatedPieSlice:
 
         portfolio_id = allocation_data['portfolio_id']
 
-        asset = (
-            self.orm_session
-            .query(tables.PortfolioAsset)
-            .filter_by(
-                ticker=ticker,
-                exchange=exchange,
-                portfolio_id=portfolio_id
-            )
-            .first()
-        )
+        if all([
+            ticker is not None,
+            exchange is not None]):
 
-        if not asset:
-            asset = tables.PortfolioAsset(
-                **dict(
+            asset = (
+                self.orm_session
+                .query(tables.PortfolioAsset)
+                .filter_by(
                     ticker=ticker,
                     exchange=exchange,
                     portfolio_id=portfolio_id
                 )
+                .first()
             )
 
-            self.orm_session.add(asset)
-            self.orm_session.commit()
+            if not asset:
+                asset = tables.PortfolioAsset(
+                    **dict(
+                        ticker=ticker,
+                        exchange=exchange,
+                        portfolio_id=portfolio_id
+                    )
+                )
 
-        allocation_data['asset_id'] = asset.id
+                self.orm_session.add(asset)
+                self.orm_session.commit()
+
+            allocation_data['asset_id'] = asset.id
 
         allocation = tables.PortfolioAllocatedPieSlice(**allocation_data)
 
