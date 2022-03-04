@@ -45,13 +45,13 @@ class AllocatedPieSlice:
         if allocation_type == AllocationType.ASSET:
             asset = (
                 self.orm_session
-                    .query(tables.PortfolioAsset)
-                    .filter_by(
+                .query(tables.PortfolioAsset)
+                .filter_by(
                     ticker=ticker,
                     exchange=exchange,
                     portfolio_id=portfolio_id
                 )
-                    .first()
+                .first()
             )
 
             if not asset:
