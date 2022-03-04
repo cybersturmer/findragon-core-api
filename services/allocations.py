@@ -28,18 +28,16 @@ class AllocatedPieSlice:
     def get_list(self) -> List[tables.PortfolioAllocatedPieSlice]:
         return (
             self.orm_session
-            .query(tables.PortfolioAllocatedPieSlice)
-            .filter(tables.PortfolioAllocatedPieSlice.parent_id.is_(None))
-            .all()
+                .query(tables.PortfolioAllocatedPieSlice)
+                .filter(tables.PortfolioAllocatedPieSlice.parent_id.is_(None))
+                .all()
         )
 
     def create(self, data: schemas.PortfolioAllocatedPieSliceCreate) -> tables.PortfolioAllocatedPieSlice:
         allocation_data = data.dict()
 
-
         ticker = allocation_data.pop('ticker')
         exchange = allocation_data.pop('exchange')
-
 
         allocation_type = allocation_data['type']
         portfolio_id = allocation_data['portfolio_id']
@@ -47,13 +45,13 @@ class AllocatedPieSlice:
         if allocation_type == AllocationType.ASSET:
             asset = (
                 self.orm_session
-                .query(tables.PortfolioAsset)
-                .filter_by(
+                    .query(tables.PortfolioAsset)
+                    .filter_by(
                     ticker=ticker,
                     exchange=exchange,
                     portfolio_id=portfolio_id
                 )
-                .first()
+                    .first()
             )
 
             if not asset:
