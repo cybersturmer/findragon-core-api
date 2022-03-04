@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from models import tables, schemas
 from database import get_session
+from models.enums import AllocationType
 
 
 class AllocatedPieSlice:
@@ -35,15 +36,15 @@ class AllocatedPieSlice:
     def create(self, data: schemas.PortfolioAllocatedPieSliceCreate) -> tables.PortfolioAllocatedPieSlice:
         allocation_data = data.dict()
 
+
         ticker = allocation_data.pop('ticker')
         exchange = allocation_data.pop('exchange')
 
+
+        allocation_type = allocation_data['type']
         portfolio_id = allocation_data['portfolio_id']
 
-        if all([
-            ticker is not None,
-            exchange is not None]):
-
+        if allocation_type == AllocationType.ASSET:
             asset = (
                 self.orm_session
                 .query(tables.PortfolioAsset)
