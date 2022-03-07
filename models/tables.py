@@ -134,8 +134,8 @@ class PortfolioAsset(Base):
         return f'PortfolioAsset {self.id} - {self.ticker} / {self.amount} '
 
 
-class PortfolioAllocatedPieSlice(Base):
-    __tablename__ = "portfolio_allocated_pie_slices"
+class PortfolioAllocation(Base):
+    __tablename__ = "portfolio_allocations"
 
     id = Column(
         Integer,
@@ -162,7 +162,7 @@ class PortfolioAllocatedPieSlice(Base):
 
     portfolio = relationship(
         Portfolio,
-        backref=backref('allocated_pie_slices'),
+        backref=backref('allocations'),
         order_by=id
     )
 
@@ -190,12 +190,12 @@ class PortfolioAllocatedPieSlice(Base):
 
     parent_id = Column(
         Integer,
-        ForeignKey('portfolio_allocated_pie_slices.id'),
+        ForeignKey('portfolio_allocations.id'),
         nullable=True
     )
 
     children = relationship(
-        'PortfolioAllocatedPieSlice',
+        'PortfolioAllocation',
         backref=backref('parent', remote_side=[id])
     )
 
@@ -211,7 +211,7 @@ class PortfolioAllocatedPieSlice(Base):
     )
 
     def __repr__(self):
-        return f'PortfolioAllocatedPieSlice {self.title} - {self.allocation_in_category}'
+        return f'PortfolioAllocation {self.title} - {self.allocation_in_category}'
 
 
 class PortfolioImports(Base):

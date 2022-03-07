@@ -12,10 +12,10 @@ class AllocatedPieSlice:
     def __init__(self, orm_session: Session = Depends(get_session)):
         self.orm_session = orm_session
 
-    def _get(self, key: int) -> tables.PortfolioAllocatedPieSlice:
+    def _get(self, key: int) -> tables.PortfolioAllocation:
         allocation = (
             self.orm_session
-                .query(tables.PortfolioAllocatedPieSlice)
+                .query(tables.PortfolioAllocation)
                 .filter_by(id=key)
                 .first()
         )
@@ -25,14 +25,14 @@ class AllocatedPieSlice:
 
         return allocation
 
-    def get_list(self) -> List[tables.PortfolioAllocatedPieSlice]:
+    def get_list(self) -> List[tables.PortfolioAllocation]:
         return (
             self.orm_session
-                .query(tables.PortfolioAllocatedPieSlice)
+                .query(tables.PortfolioAllocation)
                 .all()
         )
 
-    def create(self, data: schemas.PortfolioAllocatedPieSliceCreate) -> tables.PortfolioAllocatedPieSlice:
+    def create(self, data: schemas.PortfolioAllocatedPieSliceCreate) -> tables.PortfolioAllocation:
         allocation_data = data.dict()
 
         ticker = allocation_data.pop('ticker')
@@ -67,7 +67,7 @@ class AllocatedPieSlice:
 
             allocation_data['asset_id'] = asset.id
 
-        allocation = tables.PortfolioAllocatedPieSlice(**allocation_data)
+        allocation = tables.PortfolioAllocation(**allocation_data)
 
         if allocation.parent_id is not None:
             parent = self._get(allocation.parent_id)
@@ -82,10 +82,10 @@ class AllocatedPieSlice:
 
         return allocation
 
-    def get(self, key) -> tables.PortfolioAllocatedPieSlice:
+    def get(self, key) -> tables.PortfolioAllocation:
         return self._get(key=key)
 
-    def update(self, key: int, data: schemas.PortfolioAllocatedPieSliceUpdate) -> tables.PortfolioAllocatedPieSlice:
+    def update(self, key: int, data: schemas.PortfolioAllocatedPieSliceUpdate) -> tables.PortfolioAllocation:
         allocation = self._get(key=key)
 
         for field, value in data:
