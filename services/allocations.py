@@ -29,7 +29,6 @@ class AllocatedPieSlice:
         return (
             self.orm_session
                 .query(tables.PortfolioAllocatedPieSlice)
-                .filter(tables.PortfolioAllocatedPieSlice.parent_id.is_(None))
                 .all()
         )
 
@@ -74,7 +73,7 @@ class AllocatedPieSlice:
             parent = self._get(allocation.parent_id)
             # @todo What if parent does not exists
 
-            allocation.portfolio_ratio = parent.portfolio_ratio * allocation.category_ratio / 100 ** 2
+            allocation.portfolio_ratio = parent.portfolio_ratio * allocation.category_ratio / 100
         else:
             allocation.portfolio_ratio = allocation.category_ratio
 
