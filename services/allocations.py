@@ -73,7 +73,7 @@ class AllocatedPieSlice:
             parent = self._get(allocation.parent_id)
             # @todo What if parent does not exists
 
-            allocation.portfolio_ratio = parent.portfolio_ratio * allocation.category_ratio / 100
+            allocation.portfolio_ratio = parent.portfolio_ratio * allocation.category_ratio / 100 ** 2
         else:
             allocation.portfolio_ratio = allocation.category_ratio
 
@@ -93,6 +93,14 @@ class AllocatedPieSlice:
                 continue
 
             setattr(allocation, field, value)
+
+        if allocation.parent_id is not None:
+            parent = self._get(allocation.parent_id)
+            # @todo What if parent does not exists
+
+            allocation.portfolio_ratio = parent.portfolio_ratio * allocation.category_ratio / 100 ** 2
+        else:
+            allocation.portfolio_ratio = allocation.category_ratio
 
         self.orm_session.commit()
 
