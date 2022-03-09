@@ -32,7 +32,7 @@ class Allocation:
                 .all()
         )
 
-    def create(self, data: schemas.PortfolioAllocatedPieSliceCreate) -> tables.PortfolioAllocation:
+    def create(self, data: schemas.PortfolioAllocationCreate) -> tables.PortfolioAllocation:
         allocation_data = data.dict()
 
         ticker = allocation_data.pop('ticker')
@@ -85,7 +85,7 @@ class Allocation:
     def get(self, key) -> tables.PortfolioAllocation:
         return self._get(key=key)
 
-    def update(self, key: int, data: schemas.PortfolioAllocatedPieSliceUpdate) -> tables.PortfolioAllocation:
+    def update(self, key: int, data: schemas.PortfolioAllocationUpdate) -> tables.PortfolioAllocation:
         allocation = self._get(key=key)
 
         for field, value in data:
