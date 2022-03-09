@@ -8,7 +8,7 @@ from database import get_session
 from models.enums import AllocationType
 
 
-class AllocatedPieSlice:
+class Allocation:
     def __init__(self, orm_session: Session = Depends(get_session)):
         self.orm_session = orm_session
 
