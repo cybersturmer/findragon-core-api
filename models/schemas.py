@@ -93,14 +93,6 @@ class PortfolioAllocationGet(PortfolioAllocationBase):
 
     asset: Optional['AssetShort']
 
-    ticker: Optional[
-        constr(min_length=1)
-    ]
-
-    exchange: Optional[
-        constr(min_length=1)
-    ]
-
     children: List['PortfolioAllocationGet']
 
 
