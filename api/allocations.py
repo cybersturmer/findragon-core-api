@@ -11,16 +11,16 @@ router = APIRouter(
 )
 
 
-@router.get('/', response_model=List[schemas.PortfolioAllocatedPieSliceGet])
+@router.get('/', response_model=List[schemas.PortfolioAllocationGet])
 async def get_allocations(
         service: Allocation = Depends()
 ):
     return service.get_list()
 
 
-@router.post('/', response_model=schemas.PortfolioAllocatedPieSliceGet)
+@router.post('/', response_model=schemas.PortfolioAllocationGet)
 async def create_allocation(
-        data: schemas.PortfolioAllocatedPieSliceCreate,
+        data: schemas.PortfolioAllocationCreate,
         service: Allocation = Depends()
 ):
     """
@@ -31,7 +31,7 @@ async def create_allocation(
     )
 
 
-@router.get('/{key}', response_model=schemas.PortfolioAllocatedPieSliceGet)
+@router.get('/{key}', response_model=schemas.PortfolioAllocationGet)
 async def get_allocation(
         key: int,
         service: Allocation = Depends()
@@ -41,10 +41,10 @@ async def get_allocation(
     )
 
 
-@router.patch('/{key}', response_model=schemas.PortfolioAllocatedPieSliceGet)
+@router.patch('/{key}', response_model=schemas.PortfolioAllocationGet)
 async def update_allocation(
         key: int,
-        data: schemas.PortfolioAllocatedPieSliceUpdate,
+        data: schemas.PortfolioAllocationUpdate,
         service: Allocation = Depends()
 ):
     return service.update(
