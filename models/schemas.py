@@ -67,7 +67,7 @@ class AssetCreate(AssetBase):
     pass
 
 
-class PortfolioAllocatedPieSliceBase(BaseModel):
+class PortfolioAllocationBase(BaseModel):
     type: enums.AllocationType
     title: constr(
         strip_whitespace=True,
@@ -87,19 +87,27 @@ class PortfolioAllocatedPieSliceBase(BaseModel):
         orm_mode = True
 
 
-class PortfolioAllocatedPieSliceGet(PortfolioAllocatedPieSliceBase):
+class PortfolioAllocationGet(PortfolioAllocationBase):
     id: int
     portfolio_ratio: conint(ge=1, le=10000)
 
     asset: Optional['AssetShort']
 
-    children: List['PortfolioAllocatedPieSliceGet']
+    ticker: Optional[
+        constr(min_length=1)
+    ]
+
+    exchange: Optional[
+        constr(min_length=1)
+    ]
+
+    children: List['PortfolioAllocationGet']
 
 
-PortfolioAllocatedPieSliceGet.update_forward_refs()
+PortfolioAllocationGet.update_forward_refs()
 
 
-class PortfolioAllocatedPieSliceCreate(PortfolioAllocatedPieSliceBase):
+class PortfolioAllocationCreate(PortfolioAllocationBase):
     ticker: Optional[
         constr(min_length=1)
     ]
@@ -109,14 +117,14 @@ class PortfolioAllocatedPieSliceCreate(PortfolioAllocatedPieSliceBase):
     ]
 
 
-class PortfolioAllocatedPieSliceUpdate(BaseModel):
+class PortfolioAllocationUpdate(BaseModel):
     title: Optional[constr(min_length=1)]
 
     portfolio_ratio: Optional[conint(ge=1, le=10000)]
     category_ratio: Optional[conint(ge=100, le=10000)]
 
 
-class PortfolioAllocatedPieSliceDelete(PortfolioAllocatedPieSliceBase):
+class PortfolioAllocationDelete(PortfolioAllocationBase):
     pass
 
 
