@@ -89,7 +89,7 @@ class PortfolioAllocatedPieSliceBase(BaseModel):
 
 class PortfolioAllocatedPieSliceGet(PortfolioAllocatedPieSliceBase):
     id: int
-    portfolio_ratio: conint(ge=100, le=10000)
+    portfolio_ratio: conint(ge=1, le=10000)
 
     asset: Optional['AssetShort']
 
@@ -112,7 +112,7 @@ class PortfolioAllocatedPieSliceCreate(PortfolioAllocatedPieSliceBase):
 class PortfolioAllocatedPieSliceUpdate(BaseModel):
     title: Optional[constr(min_length=1)]
 
-    portfolio_ratio: Optional[conint(ge=100, le=10000)]
+    portfolio_ratio: Optional[conint(ge=1, le=10000)]
     category_ratio: Optional[conint(ge=100, le=10000)]
 
 
