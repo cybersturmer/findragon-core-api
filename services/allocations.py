@@ -86,18 +86,17 @@ class Allocation:
         return self._get(key=key)
 
     def update(self, key: int, data: schemas.PortfolioAllocationUpdate) -> tables.PortfolioAllocation:
+        allocation_data = data.dict()
+
         allocation = self._get(key=key)
 
-        for field, value in data:
-            if value is None:
-                continue
-
-            setattr(allocation, field, value)
+        """ 
+        We can change only category_ratio
+        Portfolio ratio is calculated by parent and """
+        allocation.category_ratio = allocation_data.pop('category_ratio')
 
         if allocation.parent_id is not None:
             parent = self._get(allocation.parent_id)
-            # @todo What if parent does not exists
-
             allocation.portfolio_ratio = parent.portfolio_ratio * allocation.category_ratio / 100 ** 2
         else:
             allocation.portfolio_ratio = allocation.category_ratio

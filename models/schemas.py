@@ -110,9 +110,6 @@ class PortfolioAllocationCreate(PortfolioAllocationBase):
 
 
 class PortfolioAllocationUpdate(BaseModel):
-    title: Optional[constr(min_length=1)]
-
-    portfolio_ratio: Optional[conint(ge=1, le=10000)]
     category_ratio: Optional[conint(ge=100, le=10000)]
 
 
