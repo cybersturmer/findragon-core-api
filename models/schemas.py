@@ -235,3 +235,7 @@ class IncomeCreate(IncomeBase):
     exchange: str
 
     currency: enums.Currency
+
+
+class IncomeUpdate(IncomeCreate):
+    pass
