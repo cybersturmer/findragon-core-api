@@ -180,3 +180,36 @@ class TransactionsImportResult(AssetBase):
     messages: List[Dict[str, str]]
 
     success: bool
+
+
+class IncomeBase(BaseModel):
+    id:  int
+
+    operation: enums.IncomeOperationType
+
+    date: date
+
+    asset: Optional['AssetShort']
+
+    type: conint(
+        ge=1
+    )
+
+    price: confloat(
+        ge=0.0
+    )
+
+    tax: confloat(
+        ge=0.0
+    )
+
+    description: str
+
+    created_at: datetime
+    updated_at: datetime
+
+    def currency_code(self) -> str:
+        return self.currency.code
+
+    class Config:
+        orm_mode = True
