@@ -9,7 +9,7 @@ from database import Base
 from models.enums import \
     AllocationType, \
     AssetType, \
-    TransactionType
+    TransactionType, IncomeType
 
 
 class User(Base):
@@ -237,6 +237,77 @@ class PortfolioImports(Base):
 
     def __repr__(self):
         return f'PortfolioImport {str(self.created_at)}'
+
+
+class PortfolioIncome(Base):
+    __tablename__ = 'portfolio_income'
+
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True,
+        autoincrement=True
+    )
+
+    asset_id = Column(
+        Integer,
+        ForeignKey('portfolio_assets.id'),
+        nullable=False
+    )
+
+    asset = relationship(
+        PortfolioAsset,
+        backref=backref('asset_income'),
+        order_by=id
+    )
+
+    operation = Column(
+        ChoiceType(IncomeType, impl=Integer())
+    )
+
+    date = Column(
+        Date,
+        nullable=False,
+        default=date.today()
+    )
+
+    currency = Column(
+        CurrencyType,
+        nullable=False
+    )
+
+    amount = Column(
+        Integer,
+        default=1
+    )
+
+    price = Column(
+        Integer,
+        default=1
+    )
+
+    tax = Column(
+        Integer
+    )
+
+    description = Column(
+        Unicode(255),
+        default=''
+    )
+
+    created_at = Column(
+        DateTime,
+        default=datetime.now
+    )
+
+    updated_at = Column(
+        DateTime,
+        default=datetime.now,
+        onupdate=datetime.now
+    )
+
+    def __repr__(self):
+        return f'PortfolioIncome {self.id} - {IncomeType(self.operation).name} - {self.ticker}'
 
 
 class PortfolioTransaction(Base):
