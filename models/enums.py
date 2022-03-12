@@ -10,8 +10,13 @@ class AllocationType(Enum):
 class TransactionType(Enum):
     BUY = auto()
     SELL = auto()
-    DIVIDENDS = auto()
-    COUPON = auto()
+
+
+class IncomeType(Enum):
+    DIVIDENDS = auto()  # Dividends paid by money
+    SHARES = auto()     # Dividends paid by shares
+    COUPONS = auto()    # Coupons paid for bonds
+    OTHER = auto()
 
 
 class BrokerType(Enum):
