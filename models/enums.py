@@ -52,3 +52,24 @@ class AssetType(Enum):
     SHARE = auto()
     BOND = auto()
     FUND = auto()
+
+
+class Currency(Enum):
+    RUB = 'RUB'
+    USD = 'USD'
+    EUR = 'EUR'
+    AUD = 'AUD'
+    CAD = 'CAD'
+    CHF = 'CHF'
+    CNY = 'CNY'
+    CZK = 'CZK'
+    GBP = 'GBP'
+    HKD = 'HKD'
+    ILS = 'ILS'
+    JPY = 'JPY'
+    KZT = 'KZT'
+    PLN = 'PLN'
+    SEK = 'SEK'
+    SGD = 'SGD'
+    TRY = 'TRY'
+    UAH = 'UAH'
