@@ -1,7 +1,20 @@
-from datetime import date, datetime
-from typing import Optional, List, Dict
+from datetime import (
+    date,
+    datetime
+)
 
-from pydantic import BaseModel, constr, conint, confloat
+from typing import (
+    Optional,
+    List,
+    Dict
+)
+
+from pydantic import (
+    BaseModel,
+    constr,
+    conint,
+    confloat
+)
 
 from models import enums
 
@@ -163,7 +176,7 @@ class TransactionCreate(TransactionBase):
     ticker: str
     exchange: str
 
-    currency: str
+    currency: enums.Currency
 
 
 class TransactionUpdate(TransactionCreate):
@@ -183,13 +196,9 @@ class TransactionsImportResult(AssetBase):
 
 
 class IncomeBase(BaseModel):
-    id:  int
-
     operation: enums.IncomeOperationType
 
     date: date
-
-    asset: Optional['AssetShort']
 
     type: conint(
         ge=1
@@ -205,11 +214,24 @@ class IncomeBase(BaseModel):
 
     description: str
 
+    class Config:
+        orm_mode = True
+
+
+class IncomeGet(IncomeBase):
+    id:  int
+
+    asset: Optional['AssetShort']
+
     created_at: datetime
     updated_at: datetime
 
     def currency_code(self) -> str:
         return self.currency.code
 
-    class Config:
-        orm_mode = True
+
+class IncomeCreate(IncomeBase):
+    ticker: str
+    exchange: str
+
+    currency: enums.Currency
