@@ -12,7 +12,7 @@ class TransactionType(Enum):
     SELL = auto()
 
 
-class IncomeType(Enum):
+class IncomeOperationType(Enum):
     DIVIDENDS = auto()  # Dividends paid by money
     SHARES = auto()     # Dividends paid by shares
     COUPONS = auto()    # Coupons paid for bonds
