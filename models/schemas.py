@@ -124,8 +124,8 @@ class TransactionBase(BaseModel):
 
     commission: confloat(ge=0.0)
 
-    description: str = ''
-    title: str = ''
+    description: Optional[str] = ''
+    title: Optional[str] = ''
 
     accrued_interest: Optional[float]  # For bonds only
 
