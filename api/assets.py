@@ -1,6 +1,13 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, Response, status, File, UploadFile
+from fastapi import (
+    APIRouter,
+    Depends,
+    Response,
+    status,
+    File,
+    UploadFile
+)
 
 from models import schemas
 from services.assets import Asset
