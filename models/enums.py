@@ -54,7 +54,7 @@ class AssetType(Enum):
     FUND = auto()
 
 
-class Currency(Enum):
+class Currency(str, Enum):
     RUB = 'RUB'
     USD = 'USD'
     EUR = 'EUR'
