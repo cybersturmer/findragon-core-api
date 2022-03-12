@@ -282,12 +282,12 @@ class PortfolioIncome(Base):
     )
 
     price = Column(
-        Integer,
+        Float,
         default=1
     )
 
     tax = Column(
-        Integer
+        Float
     )
 
     description = Column(
