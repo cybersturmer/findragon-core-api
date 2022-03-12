@@ -6,10 +6,12 @@ from sqlalchemy.orm import relationship, backref
 from sqlalchemy_utils.types import ChoiceType, CurrencyType, EmailType
 
 from database import Base
-from models.enums import \
-    AllocationType, \
-    AssetType, \
-    TransactionType, IncomeType
+from models.enums import (
+    AllocationType,
+    AssetType,
+    TransactionType,
+    IncomeOperationType
+)
 
 
 class User(Base):
@@ -262,7 +264,7 @@ class PortfolioIncome(Base):
     )
 
     operation = Column(
-        ChoiceType(IncomeType, impl=Integer())
+        ChoiceType(IncomeOperationType, impl=Integer())
     )
 
     date = Column(
@@ -287,7 +289,8 @@ class PortfolioIncome(Base):
     )
 
     tax = Column(
-        Float
+        Float,
+        default=0.00
     )
 
     description = Column(
@@ -307,7 +310,7 @@ class PortfolioIncome(Base):
     )
 
     def __repr__(self):
-        return f'PortfolioIncome {self.id} - {IncomeType(self.operation).name} - {self.ticker}'
+        return f'PortfolioIncome {self.id} - {IncomeOperationType(self.operation).name} - {self.ticker}'
 
 
 class PortfolioTransaction(Base):
