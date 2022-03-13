@@ -2,9 +2,11 @@ from typing import List
 
 from fastapi import Depends, HTTPException, status, File
 from sqlalchemy.orm import Session
+from sqlalchemy.sql import func
 
 from database import get_session
 from models import tables, schemas
+from models.enums import TransactionType
 
 
 class Asset:
@@ -30,12 +32,86 @@ class Asset:
     ) -> tables.PortfolioAsset:
         return self._get(key)
 
-    def get_list(self) -> List[tables.PortfolioAsset]:
-        return (
+    def get_list(self) -> List[dict]:
+        transaction_aggregation = (
+            self.orm_session
+            .query(
+                tables.PortfolioTransaction.asset_id,
+                tables.PortfolioTransaction.type,
+                func.sum(tables.PortfolioTransaction.amount).label('amount'),
+                func.sum(tables.PortfolioTransaction.total_price).label('total_price')
+            )
+            .group_by(
+                tables.PortfolioTransaction.type,
+                tables.PortfolioTransaction.asset_id
+            )
+            .all()
+        )
+
+        assets_list = (
             self.orm_session
             .query(tables.PortfolioAsset)
             .all()
         )
+
+        result = []
+
+        asset: tables.PortfolioAsset
+        for asset in assets_list:
+
+            try:
+                related_buy_transaction = [
+                    transaction_element
+                    for transaction_element
+                    in transaction_aggregation
+                    if transaction_element['type'] == TransactionType.BUY
+                    and transaction_element['asset_id'] == asset.id].pop()
+            except IndexError:
+                related_buy_transaction = {
+                    'type': TransactionType.BUY,
+                    'asset_id': asset.id,
+                    'amount': 0,
+                    'total_price': 0
+                }
+
+            try:
+                related_sell_transaction = [
+                    transaction_element
+                    for transaction_element
+                    in transaction_aggregation
+                    if transaction_element['type'] == TransactionType.SELL
+                    and transaction_element['asset_id'] == asset.id].pop()
+            except IndexError:
+                related_sell_transaction = {
+                    'type': TransactionType.SELL,
+                    'asset_id': asset.id,
+                    'amount': 0,
+                    'total_price': 0
+                }
+
+            _amount = related_buy_transaction['amount'] - related_sell_transaction['amount']
+
+            _price = related_buy_transaction['total_price'] - related_sell_transaction['total_price'] \
+                if _amount > 0 \
+                else None
+
+            _avg_price = round(_price / _amount, 2) \
+                if _amount > 0 \
+                else None
+
+            result.append(
+                {
+                    'id': asset.id,
+                    'ticker': asset.ticker,
+                    'exchange': asset.exchange,
+                    'description': asset.description,
+                    'amount': _amount,
+                    'total_price': _price,
+                    'avg_price': _avg_price
+                }
+            )
+
+        return result
 
     def create(self, data: schemas.AssetCreate) -> tables.PortfolioAsset:
         data_as_dict = data.dict()
