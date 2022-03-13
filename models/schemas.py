@@ -76,6 +76,15 @@ class AssetShort(BaseModel):
         orm_mode = True
 
 
+class AssetAggregated(AssetShort):
+    id: int
+
+    amount: int
+
+    avg_price: Optional[float]
+    total_price: Optional[float]
+
+
 class AssetCreate(AssetBase):
     pass
 
