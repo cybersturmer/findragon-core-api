@@ -27,7 +27,7 @@ async def import_assets(
 
 
 @router.get('/',
-            response_model=List[schemas.AssetGet],
+            response_model=List[schemas.AssetAggregated],
             summary='Get the list of assets.')
 async def get_assets(service: Asset = Depends()):
     return service.get_list()
