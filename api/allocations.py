@@ -2,7 +2,11 @@ from typing import List
 
 from fastapi import APIRouter, Depends, Response, status
 
-from models import schemas
+from models.schemas.allocation import (
+    PortfolioAllocationGet,
+    PortfolioAllocationCreate,
+    PortfolioAllocationUpdate
+)
 from services.allocations import Allocation
 
 
@@ -11,16 +15,16 @@ router = APIRouter(
 )
 
 
-@router.get('/', response_model=List[schemas.PortfolioAllocationGet])
+@router.get('/', response_model=List[PortfolioAllocationGet])
 async def get_allocations(
         service: Allocation = Depends()
 ):
     return service.get_list()
 
 
-@router.post('/', response_model=schemas.PortfolioAllocationGet)
+@router.post('/', response_model=PortfolioAllocationGet)
 async def create_allocation(
-        data: schemas.PortfolioAllocationCreate,
+        data: PortfolioAllocationCreate,
         service: Allocation = Depends()
 ):
     """
@@ -31,7 +35,7 @@ async def create_allocation(
     )
 
 
-@router.get('/{key}', response_model=schemas.PortfolioAllocationGet)
+@router.get('/{key}', response_model=PortfolioAllocationGet)
 async def get_allocation(
         key: int,
         service: Allocation = Depends()
@@ -41,10 +45,10 @@ async def get_allocation(
     )
 
 
-@router.patch('/{key}', response_model=schemas.PortfolioAllocationGet)
+@router.patch('/{key}', response_model=PortfolioAllocationGet)
 async def update_allocation(
         key: int,
-        data: schemas.PortfolioAllocationUpdate,
+        data: PortfolioAllocationUpdate,
         service: Allocation = Depends()
 ):
     return service.update(
