@@ -2,7 +2,12 @@ from typing import List
 
 from fastapi import APIRouter, Depends, Response, status
 
-from models import schemas
+from models.schemas.portfolio import (
+    PortfolioGet,
+    PortfolioCreate,
+    PortfolioUpdate
+)
+
 from services.portfolios import Portfolio
 
 router = APIRouter(
@@ -10,16 +15,16 @@ router = APIRouter(
 )
 
 
-@router.get('/', response_model=List[schemas.PortfolioGet])
+@router.get('/', response_model=List[PortfolioGet])
 async def get_portfolios(
         service: Portfolio = Depends()
 ):
     return service.get_list()
 
 
-@router.post('/', response_model=schemas.PortfolioGet)
+@router.post('/', response_model=PortfolioGet)
 async def create_portfolio(
-        data: schemas.PortfolioCreate,
+        data: PortfolioCreate,
         service: Portfolio = Depends()
 ):
     """
@@ -30,7 +35,7 @@ async def create_portfolio(
     )
 
 
-@router.get('/{key}', response_model=schemas.PortfolioGet)
+@router.get('/{key}', response_model=PortfolioGet)
 async def get_portfolio(
         key: int,
         service: Portfolio = Depends()
@@ -40,10 +45,10 @@ async def get_portfolio(
     )
 
 
-@router.put('/{key}', response_model=schemas.PortfolioUpdate)
+@router.put('/{key}', response_model=PortfolioUpdate)
 async def update_portfolio(
         key: int,
-        data: schemas.PortfolioUpdate,
+        data: PortfolioUpdate,
         service: Portfolio = Depends()
 ):
     return service.update(
