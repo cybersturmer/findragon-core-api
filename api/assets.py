@@ -9,7 +9,16 @@ from fastapi import (
     UploadFile
 )
 
-from models import schemas
+from models.schemas.transaction import (
+    TransactionsImportResult
+)
+
+from models.schemas.asset import (
+    AssetAggregated,
+    AssetCreate,
+    AssetGet
+)
+
 from services.assets import Asset
 
 router = APIRouter(
@@ -18,7 +27,7 @@ router = APIRouter(
 
 
 @router.post('/import',
-             response_model=schemas.TransactionsImportResult)
+             response_model=TransactionsImportResult)
 async def import_assets(
         service: Asset = Depends(),
         file: UploadFile = File(...)
@@ -27,14 +36,14 @@ async def import_assets(
 
 
 @router.get('/',
-            response_model=List[schemas.AssetAggregated],
+            response_model=List[AssetAggregated],
             summary='Get the list of assets.')
 async def get_assets(service: Asset = Depends()):
     return service.get_list()
 
 
 @router.get('/{key}',
-            response_model=schemas.AssetGet,
+            response_model=AssetGet,
             description='Get the list of the assets with details.')
 async def get_asset(key: int, service: Asset = Depends()):
     return service.get(
@@ -43,9 +52,9 @@ async def get_asset(key: int, service: Asset = Depends()):
 
 
 @router.post('/',
-             response_model=schemas.AssetGet,
+             response_model=AssetGet,
              description='Create the asset in portfolio.')
-async def create_asset(data: schemas.AssetCreate, service: Asset = Depends()):
+async def create_asset(data: AssetCreate, service: Asset = Depends()):
     return service.create(
         data
     )
