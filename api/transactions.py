@@ -1,6 +1,13 @@
 from typing import List
-from fastapi import APIRouter, Depends, Response, status
-from models import schemas
+
+from fastapi import APIRouter, Depends
+
+from models.schemas.transaction import (
+    TransactionGet,
+    TransactionCreate,
+    TransactionUpdate
+)
+
 from services.transactions import Transaction
 
 router = APIRouter(
@@ -8,7 +15,7 @@ router = APIRouter(
 )
 
 
-@router.get('/', response_model=List[schemas.TransactionGet])
+@router.get('/', response_model=List[TransactionGet])
 async def get_transactions(
         service: Transaction = Depends()
 ):
@@ -21,9 +28,9 @@ async def get_transactions(
     return service.get_list()
 
 
-@router.post('/', response_model=schemas.TransactionGet)
+@router.post('/', response_model=TransactionGet)
 async def create_transaction(
-        data: schemas.TransactionCreate,
+        data: TransactionCreate,
         service: Transaction = Depends()
 ):
     """
@@ -36,7 +43,7 @@ async def create_transaction(
     )
 
 
-@router.get('/{key}', response_model=schemas.TransactionBase)
+@router.get('/{key}', response_model=TransactionGet)
 async def get_transaction(
         key: int,
         service: Transaction = Depends()
@@ -50,10 +57,10 @@ async def get_transaction(
     )
 
 
-@router.put('/{key}', response_model=schemas.TransactionBase)
+@router.put('/{key}', response_model=TransactionGet)
 async def update_transaction(
         key: int,
-        data: schemas.TransactionUpdate,
+        data: TransactionUpdate,
         service: Transaction = Depends()
 ):
     """
@@ -66,7 +73,7 @@ async def update_transaction(
     )
 
 
-@router.delete('/{key}', response_model=schemas.TransactionBase)
+@router.delete('/{key}', response_model=TransactionGet)
 async def delete_transaction(
         key: int,
         service: Transaction = Depends()
