@@ -1,6 +1,17 @@
 from datetime import datetime, date
 
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Unicode, Date, Float, DateTime
+from sqlalchemy import (
+    Boolean,
+    Column,
+    ForeignKey,
+    Integer,
+    String,
+    Unicode,
+    Date,
+    Float,
+    DateTime
+)
+
 from sqlalchemy.orm import relationship, backref
 
 from sqlalchemy_utils.types import ChoiceType, CurrencyType, EmailType
