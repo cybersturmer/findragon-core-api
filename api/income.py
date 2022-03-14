@@ -7,7 +7,11 @@ from fastapi import (
     status
 )
 
-from models import schemas
+from models.schemas.income import (
+    IncomeGet,
+    IncomeCreate,
+    IncomeUpdate
+)
 from services.income import Income
 
 router = APIRouter(
@@ -15,16 +19,16 @@ router = APIRouter(
 )
 
 
-@router.get('/', response_model=List[schemas.IncomeGet])
+@router.get('/', response_model=List[IncomeGet])
 async def get_incomes(
         service: Income = Depends()
 ):
     return service.get_list()
 
 
-@router.post('/', response_model=schemas.IncomeGet)
+@router.post('/', response_model=IncomeGet)
 async def create_income(
-        data: schemas.IncomeCreate,
+        data: IncomeCreate,
         service: Income = Depends()
 ):
     return service.create(
@@ -32,7 +36,7 @@ async def create_income(
     )
 
 
-@router.get('/{key}', response_model=schemas.IncomeGet)
+@router.get('/{key}', response_model=IncomeGet)
 async def get_income(
         key: int,
         service: Income = Depends()
@@ -42,10 +46,10 @@ async def get_income(
     )
 
 
-@router.put('/{key}', response_model=schemas.IncomeGet)
+@router.put('/{key}', response_model=IncomeGet)
 async def update_income(
         key: int,
-        data: schemas.IncomeUpdate,
+        data: IncomeUpdate,
         service: Income = Depends()
 ):
     return service.update(
@@ -54,7 +58,7 @@ async def update_income(
     )
 
 
-@router.delete('/{key}', response_model=schemas.IncomeGet)
+@router.delete('/{key}', response_model=IncomeGet)
 async def delete_income(
         key: int,
         service: Income = Depends()
