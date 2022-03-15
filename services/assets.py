@@ -5,7 +5,12 @@ from sqlalchemy.orm import Session
 from sqlalchemy.sql import func
 
 from database import get_session
-from models import tables, schemas
+from models import tables
+
+from models.schemas.asset import (
+    AssetCreate
+)
+
 from models.enums import TransactionType
 
 
@@ -113,7 +118,7 @@ class Asset:
 
         return result
 
-    def create(self, data: schemas.AssetCreate) -> tables.PortfolioAsset:
+    def create(self, data: AssetCreate) -> tables.PortfolioAsset:
         data_as_dict = data.dict()
 
         asset = tables.PortfolioAsset(**data_as_dict)
