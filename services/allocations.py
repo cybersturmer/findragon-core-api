@@ -3,7 +3,13 @@ from typing import List
 from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from models import tables, schemas
+from models import tables
+
+from models.schemas.allocation import (
+    PortfolioAllocationCreate,
+    PortfolioAllocationUpdate
+)
+
 from database import get_session
 from models.enums import AllocationType
 
@@ -32,7 +38,7 @@ class Allocation:
                 .all()
         )
 
-    def create(self, data: schemas.PortfolioAllocationCreate) -> tables.PortfolioAllocation:
+    def create(self, data: PortfolioAllocationCreate) -> tables.PortfolioAllocation:
         allocation_data = data.dict()
 
         ticker = allocation_data.pop('ticker')
@@ -85,7 +91,7 @@ class Allocation:
     def get(self, key) -> tables.PortfolioAllocation:
         return self._get(key=key)
 
-    def update(self, key: int, data: schemas.PortfolioAllocationUpdate) -> tables.PortfolioAllocation:
+    def update(self, key: int, data: PortfolioAllocationUpdate) -> tables.PortfolioAllocation:
         allocation_data = data.dict()
 
         allocation = self._get(key=key)
