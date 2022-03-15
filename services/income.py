@@ -11,9 +11,11 @@ from database import (
     get_session
 )
 
-from models import (
-    tables,
-    schemas
+from models import tables
+
+from models.schemas.income import (
+    IncomeCreate,
+    IncomeUpdate
 )
 
 
@@ -44,7 +46,7 @@ class Income:
             .all()
         )
 
-    def create(self, data: schemas.IncomeCreate) -> tables.PortfolioIncome:
+    def create(self, data: IncomeCreate) -> tables.PortfolioIncome:
         income_data = data.dict()
 
         ticker = income_data.pop('ticker')
@@ -91,7 +93,7 @@ class Income:
 
     def update(self,
                key: int,
-               data: schemas.IncomeUpdate) -> tables.PortfolioIncome:
+               data: IncomeUpdate) -> tables.PortfolioIncome:
 
         income = self._get(key=key)
 
