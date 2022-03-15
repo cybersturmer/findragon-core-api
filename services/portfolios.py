@@ -3,7 +3,13 @@ from typing import List
 from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from models import tables, schemas
+from models import tables
+
+from models.schemas.portfolio import (
+    PortfolioCreate,
+    PortfolioUpdate
+)
+
 from database import get_session
 
 
@@ -31,7 +37,7 @@ class Portfolio:
             .all()
         )
 
-    def create(self, data: schemas.PortfolioCreate) -> tables.Portfolio:
+    def create(self, data: PortfolioCreate) -> tables.Portfolio:
         portfolio = tables.Portfolio(**data.dict())
 
         self.session.add(portfolio)
@@ -42,7 +48,7 @@ class Portfolio:
     def get(self, item_id: int) -> tables.Portfolio:
         return self._get(item_id=item_id)
 
-    def update(self, item_id: int, data: schemas.PortfolioUpdate) -> tables.Portfolio:
+    def update(self, item_id: int, data: PortfolioUpdate) -> tables.Portfolio:
         portfolio = self._get(item_id=item_id)
 
         for field, value in data:
