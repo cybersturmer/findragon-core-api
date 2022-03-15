@@ -3,7 +3,12 @@ from typing import List
 from fastapi import Depends, HTTPException, status
 
 from database import Session, get_session
-from models import tables, schemas
+from models import tables
+
+from models.schemas.transaction import (
+    TransactionBase,
+    TransactionUpdate
+)
 
 
 class Transaction:
@@ -33,7 +38,7 @@ class Transaction:
             .all()
         )
 
-    def create(self, data: schemas.TransactionBase) -> tables.PortfolioTransaction:
+    def create(self, data: TransactionBase) -> tables.PortfolioTransaction:
         transaction_data = data.dict()
 
         ticker = transaction_data.pop('ticker')
@@ -87,7 +92,7 @@ class Transaction:
 
     def update(self,
                key: int,
-               data: schemas.TransactionUpdate) -> tables.PortfolioTransaction:
+               data: TransactionUpdate) -> tables.PortfolioTransaction:
 
         transaction = self._get(key=key)
 
