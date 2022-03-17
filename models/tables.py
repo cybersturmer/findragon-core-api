@@ -274,6 +274,18 @@ class PortfolioIncome(Base):
         order_by=id
     )
 
+    portfolio_id = Column(
+        Integer,
+        ForeignKey('portfolio.id'),
+        nullable=False
+    )
+
+    portfolio = relationship(
+        Portfolio,
+        backref=backref('incomes'),
+        order_by=id
+    )
+
     operation = Column(
         ChoiceType(IncomeOperationType, impl=Integer())
     )
