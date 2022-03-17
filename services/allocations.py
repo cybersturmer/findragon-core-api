@@ -46,7 +46,6 @@ class Allocation:
 
         allocation_type = allocation_data['type']
         portfolio_id = allocation_data['portfolio_id']
-        description = f'{ticker}.{exchange}'
 
         if allocation_type == AllocationType.ASSET:
             asset = (
@@ -55,7 +54,6 @@ class Allocation:
                 .filter_by(
                     ticker=ticker,
                     exchange=exchange,
-                    description=description,
                     portfolio_id=portfolio_id
                 )
                 .first()
