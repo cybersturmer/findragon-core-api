@@ -66,7 +66,7 @@ class Income:
         )
 
         if not asset:
-            asset = tables.PortfolioIncome(
+            asset = tables.PortfolioAsset(
                 **dict(
                     ticker=ticker,
                     exchange=exchange,
