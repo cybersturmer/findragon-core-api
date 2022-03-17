@@ -21,10 +21,6 @@ class IncomeBase(BaseModel):
 
     date: date
 
-    type: conint(
-        ge=1
-    )
-
     price: confloat(
         ge=0.0
     )
@@ -34,6 +30,8 @@ class IncomeBase(BaseModel):
     )
 
     description: str
+
+    portfolio_id: int
 
     class Config:
         orm_mode = True
