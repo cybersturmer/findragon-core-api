@@ -53,6 +53,7 @@ class Income:
         exchange = income_data.pop('exchange')
 
         portfolio_id = income_data['portfolio_id']
+        description = f'{ticker}.{exchange}'
 
         asset = (
             self.orm_session
@@ -60,6 +61,7 @@ class Income:
             .filter_by(
                 ticker=ticker,
                 exchange=exchange,
+                description=description,
                 portfolio_id=portfolio_id
             )
             .first()
