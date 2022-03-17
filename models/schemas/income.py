@@ -21,6 +21,10 @@ class IncomeBase(BaseModel):
 
     date: date
 
+    amount: confloat(
+        ge=0.0
+    )
+
     price: confloat(
         ge=0.0
     )
@@ -30,6 +34,8 @@ class IncomeBase(BaseModel):
     )
 
     description: str
+
+    currency: enums.Currency
 
     portfolio_id: int
 
@@ -52,8 +58,6 @@ class IncomeGet(IncomeBase):
 class IncomeCreate(IncomeBase):
     ticker: str
     exchange: str
-
-    currency: enums.Currency
 
 
 class IncomeUpdate(IncomeCreate):
