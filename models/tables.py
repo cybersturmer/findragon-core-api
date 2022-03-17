@@ -253,7 +253,7 @@ class PortfolioImports(Base):
 
 
 class PortfolioIncome(Base):
-    __tablename__ = 'portfolio_income'
+    __tablename__ = 'portfolio_incomes'
 
     id = Column(
         Integer,
