@@ -15,7 +15,7 @@ from models.schemas.income import (
 from services.incomes import Income
 
 router = APIRouter(
-    prefix='/income'
+    prefix='/incomes'
 )
 
 
