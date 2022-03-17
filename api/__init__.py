@@ -4,7 +4,7 @@ from .allocations import router as allocation_router
 from .portfolios import router as portfolio_router
 from .assets import router as asset_router
 from .transactions import router as transaction_router
-from .income import router as income_router
+from .incomes import router as income_router
 
 from .eod import router as eod_router
 
