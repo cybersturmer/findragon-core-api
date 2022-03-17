@@ -12,7 +12,7 @@ from models.schemas.income import (
     IncomeCreate,
     IncomeUpdate
 )
-from services.income import Income
+from services.incomes import Income
 
 router = APIRouter(
     prefix='/income'
