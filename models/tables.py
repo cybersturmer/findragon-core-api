@@ -96,6 +96,10 @@ class Portfolio(Base):
         return f'Portfolio ({self.id})'
 
 
+def portfolio_asset_description_by_default(ctx):
+    return f'{ctx.get_current_parameters()["ticker"]}.{ctx.get_current_parameters()["exchange"]}'
+
+
 class PortfolioAsset(Base):
     __tablename__ = 'portfolio_assets'
 
@@ -108,7 +112,7 @@ class PortfolioAsset(Base):
 
     description = Column(
         Unicode(255),
-        default=''
+        default=portfolio_asset_description_by_default
     )
 
     exchange = Column(
