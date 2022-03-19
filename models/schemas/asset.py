@@ -6,7 +6,8 @@ from typing import (
 )
 
 from pydantic import (
-    BaseModel
+    BaseModel,
+    validator
 )
 
 
@@ -46,6 +47,13 @@ class AssetAggregated(AssetShort):
 
     avg_price: Optional[float]
     total_price: Optional[float]
+
+    @validator('avg_price', 'total_price')
+    def result_check(cls, v):
+        if v is None:
+            return v
+
+        return round(v, 2)
 
 
 class AssetCreate(AssetBase):
