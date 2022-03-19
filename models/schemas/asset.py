@@ -48,7 +48,10 @@ class AssetAggregated(AssetShort):
     avg_price: Optional[float]
     total_price: Optional[float]
 
-    @validator('avg_price', 'total_price')
+    @validator(
+        'avg_price',
+        'total_price'
+    )
     def result_check(cls, v):
         if v is None:
             return v
