@@ -30,7 +30,7 @@ class TransactionBase(BaseModel):
 
     accrued_interest: Optional[float]  # For bonds only
 
-    price: confloat(ge=0.0)
+    price: float
 
     type: enums.TransactionType
 
@@ -47,10 +47,13 @@ class TransactionGet(TransactionBase):
 
     asset: Optional['AssetShort']
 
+    amount_change: float
+
+    cost: float
+    cost_change: float
+
     imported: bool = False
     import_id: Optional[int] = None
-
-    total_price: int
 
     @property
     def currency_code(self) -> str:
