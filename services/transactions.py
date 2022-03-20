@@ -72,7 +72,7 @@ class Transaction:
 
         transaction = tables.PortfolioTransaction(**transaction_data)
 
-        transaction.total_price = transaction.amount * transaction.price
+        transaction.cost = transaction.amount * transaction.price
 
         transaction.imported = False
         transaction.import_id = None
@@ -102,7 +102,7 @@ class Transaction:
 
             setattr(transaction, field, value)
 
-        transaction.total_price = transaction.amount * transaction.price
+        transaction.cost = transaction.amount * transaction.price
 
         transaction.imported = False
 
