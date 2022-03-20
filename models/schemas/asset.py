@@ -43,14 +43,15 @@ class AssetShort(BaseModel):
 class AssetAggregated(AssetShort):
     id: int
 
-    amount: int
+    amount_change: int
+
+    cost_change: Optional[float]
 
     avg_price: Optional[float]
-    total_price: Optional[float]
 
     @validator(
         'avg_price',
-        'total_price'
+        'cost_change'
     )
     def result_check(cls, v):
         if v is None:
