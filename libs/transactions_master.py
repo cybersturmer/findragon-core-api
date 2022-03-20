@@ -32,11 +32,12 @@ class TransactionsMaster:
         ])
 
     def calculate_purchase_cost(self, amount: int) -> float:
-        reversed_transactions = reversed(self.__buying_transactions)
+        reversed_buying_transactions = reversed(self.__buying_transactions)
 
         _to_process_amount = amount
         _current_purchase_cost = 0
-        for _transaction in reversed_transactions:
+
+        for _transaction in reversed_buying_transactions:
             _diff = _to_process_amount - _transaction.amount
 
             if _diff < 0:
@@ -48,6 +49,7 @@ class TransactionsMaster:
                 break
             else:
                 _current_purchase_cost += _transaction.cost
+                _to_process_amount -= _transaction.amount
 
         return _current_purchase_cost
 
