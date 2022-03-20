@@ -340,6 +340,20 @@ class PortfolioIncome(Base):
         return f'PortfolioIncome {self.id} - {IncomeOperationType(self.operation).name} - {self.ticker}'
 
 
+def portfolio_transaction_amount_change_by_default(ctx):
+    type_ = ctx.get_current_parameters()['type']
+    amount = ctx.get_current_parameters()['amount']
+
+    return amount * -1 if type_ == TransactionType.SELL else amount
+
+
+def portfolio_transaction_cost_change_by_default(ctx):
+    type_ = ctx.get_current_parameters()['type']
+    cost = ctx.get_current_parameters()['cost']
+
+    return cost * -1 if type_ == TransactionType.BUY else cost
+
+
 class PortfolioTransaction(Base):
     __tablename__ = 'portfolio_transactions'
 
@@ -351,8 +365,15 @@ class PortfolioTransaction(Base):
     )
 
     amount = Column(
+        Integer
+    )
+
+    # We use it to calculate how this transaction affected balance
+    # -x for selling and +x for buying
+    amount_change = Column(
         Integer,
-        default=1
+        default=portfolio_transaction_amount_change_by_default,
+        onupdate=portfolio_transaction_amount_change_by_default
     )
 
     asset_type = Column(
@@ -416,9 +437,15 @@ class PortfolioTransaction(Base):
         nullable=False
     )
 
-    total_price = Column(
+    cost = Column(
         Float,
         nullable=False
+    )
+
+    cost_change = Column(
+        Float,
+        default=portfolio_transaction_cost_change_by_default,
+        onupdate=portfolio_transaction_cost_change_by_default
     )
 
     type = Column(
