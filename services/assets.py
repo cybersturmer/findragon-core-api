@@ -7,11 +7,11 @@ from sqlalchemy.sql import func
 from database import get_session
 from models import tables
 
+from libs.transactions_master import TransactionsMaster
+
 from models.schemas.asset import (
     AssetCreate
 )
-
-from models.enums import TransactionType
 
 
 class Asset:
@@ -42,14 +42,20 @@ class Asset:
             self.orm_session
             .query(
                 tables.PortfolioTransaction.asset_id,
-                tables.PortfolioTransaction.type,
-                func.sum(tables.PortfolioTransaction.amount).label('amount'),
-                func.sum(tables.PortfolioTransaction.total_price).label('total_price')
+                func.sum(tables.PortfolioTransaction.amount_change).label('amount_change'),
+                func.sum(tables.PortfolioTransaction.cost_change).label('cost_change')
             )
             .group_by(
-                tables.PortfolioTransaction.type,
-                tables.PortfolioTransaction.asset_id
+                tables.PortfolioTransaction.asset_id,
+                tables.PortfolioTransaction.type
             )
+            .all()
+        )
+
+        transactions: List[tables.PortfolioTransaction] = (
+            self.orm_session
+            .query(tables.PortfolioTransaction)
+            .order_by(tables.PortfolioTransaction.date)
             .all()
         )
 
@@ -63,46 +69,24 @@ class Asset:
 
         asset: tables.PortfolioAsset
         for asset in assets_list:
-
             try:
-                related_buy_transaction = [
+                _related_transactions = [
                     transaction_element
                     for transaction_element
-                    in transaction_aggregation
-                    if transaction_element['type'] == TransactionType.BUY
-                    and transaction_element['asset_id'] == asset.id].pop()
+                    in transactions
+                    if transaction_element.asset == asset]
+
+                transaction_master = TransactionsMaster(_related_transactions)
+
+                _amount_change = transaction_master.calculate_purchase_amount()
+                _cost_change = transaction_master.calculate_purchase_cost(_amount_change)
+                _avg_price = transaction_master.calculate_average_price()
+
             except IndexError:
-                related_buy_transaction = {
-                    'type': TransactionType.BUY,
-                    'asset_id': asset.id,
-                    'amount': 0,
-                    'total_price': 0
-                }
+                _amount_change = 0
+                _cost_change = 0
 
-            try:
-                related_sell_transaction = [
-                    transaction_element
-                    for transaction_element
-                    in transaction_aggregation
-                    if transaction_element['type'] == TransactionType.SELL
-                    and transaction_element['asset_id'] == asset.id].pop()
-            except IndexError:
-                related_sell_transaction = {
-                    'type': TransactionType.SELL,
-                    'asset_id': asset.id,
-                    'amount': 0,
-                    'total_price': 0
-                }
-
-            _amount = related_buy_transaction['amount'] - related_sell_transaction['amount']
-
-            _price = related_buy_transaction['total_price'] - related_sell_transaction['total_price'] \
-                if _amount > 0 \
-                else None
-
-            _avg_price = round(_price / _amount, 2) \
-                if _amount > 0 \
-                else None
+                _avg_price = 0
 
             result.append(
                 {
@@ -110,8 +94,8 @@ class Asset:
                     'ticker': asset.ticker,
                     'exchange': asset.exchange,
                     'description': asset.description,
-                    'amount': _amount,
-                    'total_price': _price,
+                    'amount_change': _amount_change,
+                    'cost_change': _cost_change,
                     'avg_price': _avg_price
                 }
             )
