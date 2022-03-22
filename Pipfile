@@ -13,6 +13,7 @@ alembic = "*"
 requests = "*"
 pandas = "*"
 python-multipart = "*"
+eod = "*"
 
 [dev-packages]
 
