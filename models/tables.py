@@ -351,7 +351,7 @@ def portfolio_transaction_cost_change_by_default(ctx):
     type_ = ctx.get_current_parameters()['type']
     cost = ctx.get_current_parameters()['cost']
 
-    return cost * -1 if type_ == TransactionType.BUY else cost
+    return cost * -1 if type_ == TransactionType.SELL else cost
 
 
 class PortfolioTransaction(Base):
