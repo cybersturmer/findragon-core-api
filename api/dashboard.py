@@ -9,9 +9,8 @@ router = APIRouter(
     prefix='/dashboard'
 )
 
-
-@router.get('/total_purchase')
-async def get_total_purchase(
+@router.get('/total_cost_stats')
+async def get_total_market_price(
         service: Dashboard = Depends()
 ):
-    return service.get_total_purchase()
+    return service.get_total_stats()
