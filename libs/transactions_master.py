@@ -61,7 +61,8 @@ class TransactionsMaster:
 
         amount = self.calculate_purchase_amount()
 
-        assert amount > 0, 'We cant sell more than we have'
+        assert amount >= 0, \
+            'We cant sell more than we have'
 
         # We cannot calculate average price if we don't have assets
         if amount == 0:
