@@ -38,20 +38,6 @@ class Asset:
         return self._get(key)
 
     def get_list(self) -> List[dict]:
-        transaction_aggregation = (
-            self.orm_session
-            .query(
-                tables.PortfolioTransaction.asset_id,
-                func.sum(tables.PortfolioTransaction.amount_change).label('amount_change'),
-                func.sum(tables.PortfolioTransaction.cost_change).label('cost_change')
-            )
-            .group_by(
-                tables.PortfolioTransaction.asset_id,
-                tables.PortfolioTransaction.type
-            )
-            .all()
-        )
-
         transactions: List[tables.PortfolioTransaction] = (
             self.orm_session
             .query(tables.PortfolioTransaction)
@@ -59,7 +45,7 @@ class Asset:
             .all()
         )
 
-        assets_list = (
+        assets_list: List[tables.PortfolioAsset] = (
             self.orm_session
             .query(tables.PortfolioAsset)
             .all()
