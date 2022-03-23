@@ -16,6 +16,8 @@ class AssetTotalStats(TypedDict):
     amount: int
     total_purchase: float
     total_market_price: float
+    total_diff: float
+    total_ratio: str
 
 
 class Dashboard:
@@ -47,7 +49,8 @@ class Dashboard:
                 price=0.0,
                 amount=_amount,
                 total_purchase=_total_purchase,
-                total_market_price=0.0
+                total_market_price=0.0,
+                total_diff=0.0
             )
 
             mapping_list[_code] = _asset_id
@@ -67,12 +70,19 @@ class Dashboard:
         eod_data_for_asset: dict
         for eod_data_for_asset in eod_response_wrapped:
             _code = eod_data_for_asset['code']
-            _price = float(eod_data_for_asset['previousClose'])
-
             _asset_id = mapping_list[_code]
 
+            _price = float(eod_data_for_asset['previousClose'])
+
+            _total_market_price = _price * response[_asset_id]['amount']
+            _total_purchase = response[_asset_id]['total_purchase']
+            _total_diff = _total_market_price - _total_purchase
+            _total_ratio = _total_diff / _total_purchase * 100
+
+            response[_asset_id]['total_diff'] = _total_diff
+            response[_asset_id]['total_ratio'] = f'{_total_ratio:.2f}%'
             response[_asset_id]['price'] = _price
-            response[_asset_id]['total_market_price'] = _price * response[_asset_id]['amount']
+            response[_asset_id]['total_market_price'] = _total_market_price
 
         return response
 
