@@ -50,7 +50,8 @@ class Dashboard:
                 amount=_amount,
                 total_purchase=_total_purchase,
                 total_market_price=0.0,
-                total_diff=0.0
+                total_diff=0.0,
+                total_ratio='0%'
             )
 
             mapping_list[_code] = _asset_id
