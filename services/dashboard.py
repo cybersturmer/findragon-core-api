@@ -17,7 +17,7 @@ class AssetTotalStats(TypedDict):
     total_purchase: float
     total_market_price: float
     total_diff: float
-    total_ratio: str
+    total_ratio: float
 
 
 class Dashboard:
@@ -51,7 +51,7 @@ class Dashboard:
                 total_purchase=_total_purchase,
                 total_market_price=0.0,
                 total_diff=0.0,
-                total_ratio='0%'
+                total_ratio=0.0
             )
 
             mapping_list[_code] = _asset_id
@@ -76,13 +76,17 @@ class Dashboard:
             _price = float(eod_data_for_asset['previousClose'])
 
             _total_market_price = _price * response[_asset_id]['amount']
+
             _total_purchase = response[_asset_id]['total_purchase']
+
             _total_diff = _total_market_price - _total_purchase
             _total_ratio = _total_diff / _total_purchase * 100
 
             response[_asset_id]['total_diff'] = _total_diff
-            response[_asset_id]['total_ratio'] = f'{_total_ratio:.2f}%'
+            response[_asset_id]['total_ratio'] = _total_ratio
+
             response[_asset_id]['price'] = _price
+
             response[_asset_id]['total_market_price'] = _total_market_price
 
         return response
