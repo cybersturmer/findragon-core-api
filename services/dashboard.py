@@ -70,6 +70,7 @@ class Dashboard:
 
         eod_data_for_asset: dict
         for eod_data_for_asset in eod_response_wrapped:
+
             _code = eod_data_for_asset['code']
             _asset_id = mapping_list[_code]
 
