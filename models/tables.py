@@ -115,12 +115,12 @@ class PortfolioAsset(Base):
         default=portfolio_asset_description_by_default
     )
 
-    exchange = Column(
+    ticker = Column(
         String,
         nullable=False
     )
 
-    ticker = Column(
+    exchange = Column(
         String,
         nullable=False
     )
@@ -149,6 +149,58 @@ class PortfolioAsset(Base):
 
     def __repr__(self):
         return f'PortfolioAsset {self.id} - {self.ticker} / {self.amount} '
+
+
+class PortfolioAssetBaseCache(Base):
+    """
+    This model helps us to cache information
+    that we collect from third party tools.
+    It also helps to override information
+    from third party tools.
+    """
+
+    __tablename__ = 'portfolio_asset_base_cache'
+
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True,
+        autoincrement=True
+    )
+
+    # Fixed data shouldn't be updated,
+    # Based on third party tools information
+    fixed = Column(
+        Boolean
+    )
+
+    description = Column(
+        Unicode(255)
+    )
+
+    ticker = Column(
+        String,
+        nullable=False
+    )
+
+    exchange = Column(
+        String,
+        nullable=False
+    )
+
+    created_at = Column(
+        DateTime,
+        default=datetime.now
+    )
+
+    updated_at = Column(
+        DateTime,
+        default=datetime.now,
+        onupdate=datetime.now
+    )
+
+    def __repr__(self):
+        return f'PortfolioAsset {self.ticker}.{self.exchange}'
 
 
 class PortfolioAllocation(Base):
