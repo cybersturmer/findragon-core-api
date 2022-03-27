@@ -146,7 +146,7 @@ class PortfolioAsset(Base):
     )
 
     def __repr__(self):
-        return f'PortfolioAsset {self.id} - {self.ticker} / {self.amount} '
+        return f'PortfolioAsset {self.id} - {self.ticker}.{self.exchange}'
 
 
 class PortfolioAssetBaseCache(Base):
@@ -202,7 +202,7 @@ class PortfolioAssetBaseCache(Base):
     )
 
     def __repr__(self):
-        return f'PortfolioAsset {self.ticker}.{self.exchange}'
+        return f'PortfolioAssetBaseCache {self.ticker}.{self.exchange}'
 
 
 class PortfolioAllocation(Base):
