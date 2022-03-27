@@ -45,6 +45,15 @@ class Asset:
             .all()
         )
 
+        asset_base_cache_list: List[tables.PortfolioAssetBaseCache] = (
+            self.orm_session
+            .query(tables.PortfolioAssetBaseCache)
+            .filter_by(
+                manual=True
+            )
+            .all()
+        )
+
         assets_list: List[tables.PortfolioAsset] = (
             self.orm_session
             .query(tables.PortfolioAsset)
@@ -52,6 +61,7 @@ class Asset:
         )
 
         result = []
+        _related_cache = None
 
         asset: tables.PortfolioAsset
         for asset in assets_list:
@@ -60,7 +70,15 @@ class Asset:
                     transaction_element
                     for transaction_element
                     in transactions
-                    if transaction_element.asset == asset]
+                    if transaction_element.asset == asset
+                ]
+
+                _related_cache = [
+                    cache
+                    for cache
+                    in asset_base_cache_list
+                    if cache.manual is True
+                ].pop()
 
                 transaction_master = TransactionsMaster(_related_transactions)
 
@@ -74,15 +92,23 @@ class Asset:
 
                 _avg_price = 0
 
+            if _related_cache is None:
+                _title = f'{asset.ticker}.{asset.exchange}'
+                _description = ''
+            else:
+                _title = _related_cache.title
+                _description = _related_cache.description
+
             result.append(
                 {
-                    'id': asset.id,
-                    'ticker': asset.ticker,
-                    'exchange': asset.exchange,
-                    'description': asset.description,
-                    'amount_change': _amount_change,
-                    'cost_change': _cost_change,
-                    'avg_price': _avg_price
+                    'id':               asset.id,
+                    'ticker':           asset.ticker,
+                    'exchange':         asset.exchange,
+                    'title':            _title,
+                    'description':      _description,
+                    'amount_change':    _amount_change,
+                    'cost_change':      _cost_change,
+                    'avg_price':        _avg_price
                 }
             )
 
