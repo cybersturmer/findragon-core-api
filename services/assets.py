@@ -21,9 +21,9 @@ class Asset:
     def _get(self, key: int) -> tables.PortfolioAsset:
         asset = (
             self.orm_session
-            .query(tables.PortfolioAsset)
-            .filter_by(id=key)
-            .first()
+                .query(tables.PortfolioAsset)
+                .filter_by(id=key)
+                .first()
         )
 
         if not asset:
@@ -40,45 +40,38 @@ class Asset:
     def get_list(self) -> List[dict]:
         transactions: List[tables.PortfolioTransaction] = (
             self.orm_session
-            .query(tables.PortfolioTransaction)
-            .order_by(tables.PortfolioTransaction.date)
-            .all()
+                .query(tables.PortfolioTransaction)
+                .order_by(tables.PortfolioTransaction.date)
+                .all()
         )
 
         asset_base_cache_list: List[tables.PortfolioAssetBaseCache] = (
             self.orm_session
-            .query(tables.PortfolioAssetBaseCache)
-            .filter_by(
-                manual=True
+                .query(tables.PortfolioAssetBaseCache)
+                .filter_by(
+                    manual=True
             )
-            .all()
+                .all()
         )
 
         assets_list: List[tables.PortfolioAsset] = (
             self.orm_session
-            .query(tables.PortfolioAsset)
-            .all()
+                .query(tables.PortfolioAsset)
+                .all()
         )
 
         result = []
         _related_cache = None
 
-        asset: tables.PortfolioAsset
-        for asset in assets_list:
+        _asset: tables.PortfolioAsset
+        for _asset in assets_list:
             try:
                 _related_transactions = [
                     transaction_element
                     for transaction_element
                     in transactions
-                    if transaction_element.asset == asset
+                    if transaction_element.asset == _asset
                 ]
-
-                _related_cache = [
-                    cache
-                    for cache
-                    in asset_base_cache_list
-                    if cache.manual is True
-                ].pop()
 
                 transaction_master = TransactionsMaster(_related_transactions)
 
@@ -92,23 +85,34 @@ class Asset:
 
                 _avg_price = 0
 
-            if _related_cache is None:
-                _title = f'{asset.ticker}.{asset.exchange}'
+            _related_cache = [
+                cache
+                for cache
+                in asset_base_cache_list
+                if cache.manual is True
+                and cache.ticker == _asset.ticker
+                and cache.exchange == _asset.exchange
+            ]
+
+            _related_cache_first_occurrence = _related_cache[0] if len(_related_cache) > 0 else None
+
+            if _related_cache_first_occurrence is None:
+                _title = f'{_asset.ticker}.{_asset.exchange}'
                 _description = ''
             else:
-                _title = _related_cache.title
-                _description = _related_cache.description
+                _title = _related_cache_first_occurrence.title
+                _description = _related_cache_first_occurrence.description
 
             result.append(
                 {
-                    'id':               asset.id,
-                    'ticker':           asset.ticker,
-                    'exchange':         asset.exchange,
-                    'title':            _title,
-                    'description':      _description,
-                    'amount_change':    _amount_change,
-                    'cost_change':      _cost_change,
-                    'avg_price':        _avg_price
+                    'id': _asset.id,
+                    'ticker': _asset.ticker,
+                    'exchange': _asset.exchange,
+                    'title': _title,
+                    'description': _description,
+                    'amount_change': _amount_change,
+                    'cost_change': _cost_change,
+                    'avg_price': _avg_price
                 }
             )
 
