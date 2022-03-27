@@ -97,7 +97,10 @@ class Portfolio(Base):
 
 
 def portfolio_asset_description_by_default(ctx):
-    return f'{ctx.get_current_parameters()["ticker"]}.{ctx.get_current_parameters()["exchange"]}'
+    ticker = ctx.get_current_parameters()["ticker"]
+    exchange = ctx.get_current_parameters()["exchange"]
+
+    return f'{ticker}.{exchange}'
 
 
 class PortfolioAsset(Base):
@@ -108,11 +111,6 @@ class PortfolioAsset(Base):
         primary_key=True,
         index=True,
         autoincrement=True
-    )
-
-    description = Column(
-        Unicode(255),
-        default=portfolio_asset_description_by_default
     )
 
     ticker = Column(
@@ -168,10 +166,14 @@ class PortfolioAssetBaseCache(Base):
         autoincrement=True
     )
 
-    # Fixed data shouldn't be updated,
+    # Manual data shouldn't be updated,
     # Based on third party tools information
-    fixed = Column(
+    manual = Column(
         Boolean
+    )
+
+    title = Column(
+        Unicode(255)
     )
 
     description = Column(
