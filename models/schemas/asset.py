@@ -12,6 +12,7 @@ from pydantic import (
 
 
 class AssetBase(BaseModel):
+    title: Optional[str] = ''
     description: Optional[str] = ''
 
     exchange: str
@@ -34,7 +35,8 @@ class AssetShort(BaseModel):
     ticker: str
     exchange: str
 
-    description: str
+    title: Optional[str]
+    description: Optional[str]
 
     class Config:
         orm_mode = True
