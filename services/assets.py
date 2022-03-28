@@ -55,7 +55,9 @@ class Asset:
                 .outerjoin(
                     tables.PortfolioAssetBaseCache,
                     (tables.PortfolioAsset.ticker == tables.PortfolioAssetBaseCache.ticker) &
-                    (tables.PortfolioAsset.exchange == tables.PortfolioAssetBaseCache.exchange)
+                    (tables.PortfolioAsset.exchange == tables.PortfolioAssetBaseCache.exchange) &
+                    (tables.PortfolioAssetBaseCache.manual == True)
+
                 )
                 .all()
         )
