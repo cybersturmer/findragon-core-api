@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from fastapi import Depends, HTTPException, status, File
 from sqlalchemy.orm import Session
@@ -38,6 +38,7 @@ class Asset:
         return self._get(key)
 
     def get_list(self) -> List[dict]:
+
         transactions: List[tables.PortfolioTransaction] = (
             self.orm_session
                 .query(tables.PortfolioTransaction)
@@ -45,18 +46,17 @@ class Asset:
                 .all()
         )
 
-        asset_base_cache_list: List[tables.PortfolioAssetBaseCache] = (
-            self.orm_session
-                .query(tables.PortfolioAssetBaseCache)
-                .filter_by(
-                    manual=True
-            )
-                .all()
-        )
-
         assets_list: List[tables.PortfolioAsset] = (
             self.orm_session
-                .query(tables.PortfolioAsset)
+                .query(
+                    tables.PortfolioAsset,
+                    tables.PortfolioAssetBaseCache
+                )
+                .outerjoin(
+                    tables.PortfolioAssetBaseCache,
+                    (tables.PortfolioAsset.ticker == tables.PortfolioAssetBaseCache.ticker) &
+                    (tables.PortfolioAsset.exchange == tables.PortfolioAssetBaseCache.exchange)
+                )
                 .all()
         )
 
@@ -64,44 +64,28 @@ class Asset:
         _related_cache = None
 
         _asset: tables.PortfolioAsset
-        for _asset in assets_list:
-            try:
-                _related_transactions = [
-                    transaction_element
-                    for transaction_element
-                    in transactions
-                    if transaction_element.asset == _asset
-                ]
+        _asset_cache: Optional[tables.PortfolioAssetBaseCache]
 
-                transaction_master = TransactionsMaster(_related_transactions)
-
-                _amount_change = transaction_master.calculate_purchase_amount()
-                _cost_change = transaction_master.calculate_purchase_cost(_amount_change)
-                _avg_price = transaction_master.calculate_average_price()
-
-            except IndexError:
-                _amount_change = 0
-                _cost_change = 0
-
-                _avg_price = 0
-
-            _related_cache = [
-                cache
-                for cache
-                in asset_base_cache_list
-                if cache.manual is True
-                and cache.ticker == _asset.ticker
-                and cache.exchange == _asset.exchange
+        for _asset, _asset_cache in assets_list:
+            _related_transactions = [
+                transaction_element
+                for transaction_element
+                in transactions
+                if transaction_element.asset == _asset
             ]
 
-            _related_cache_first_occurrence = _related_cache[0] if len(_related_cache) > 0 else None
+            transaction_master = TransactionsMaster(_related_transactions)
 
-            if _related_cache_first_occurrence is None:
+            _amount_change = transaction_master.calculate_purchase_amount()
+            _cost_change = transaction_master.calculate_purchase_cost(_amount_change)
+            _avg_price = transaction_master.calculate_average_price()
+
+            if _asset_cache is None:
                 _title = f'{_asset.ticker}.{_asset.exchange}'
                 _description = ''
             else:
-                _title = _related_cache_first_occurrence.title
-                _description = _related_cache_first_occurrence.description
+                _title = _asset_cache.title
+                _description = _asset_cache.description
 
             result.append(
                 {
