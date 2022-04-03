@@ -45,7 +45,9 @@ class Stats:
 
         asset_query_list = []
         mapping_list = {}
-        response = {}
+
+        response_data = {}
+
         for row in transactions_list:
             _asset_id, _code, _amount, _total_purchase_cost = row
             asset = AssetTotalStats(
@@ -65,7 +67,7 @@ class Stats:
 
             asset_query_list.append(_code)
 
-            response[_asset_id] = asset
+            response_data[_asset_id] = asset
 
         separator = ','
         asset_query = separator.join(asset_query_list)
@@ -83,24 +85,24 @@ class Stats:
 
             _price = float(eod_data_for_asset['previousClose'])
 
-            _total_market_price = _price * response[_asset_id]['amount']
+            _total_market_price = _price * response_data[_asset_id]['amount']
 
-            _total_purchase_cost = response[_asset_id]['total_purchase_cost']
+            _total_purchase_cost = response_data[_asset_id]['total_purchase_cost']
 
             _total_diff = _total_market_price - _total_purchase_cost
             _total_ratio = _total_diff / _total_purchase_cost * 100
 
-            response[_asset_id]['portfolio_change'] = _total_diff
-            response[_asset_id]['portfolio_change_p'] = _total_ratio
+            response_data[_asset_id]['portfolio_change'] = _total_diff
+            response_data[_asset_id]['portfolio_change_p'] = _total_ratio
 
-            response[_asset_id]['price'] = _price
+            response_data[_asset_id]['price'] = _price
 
-            response[_asset_id]['total_market_price'] = _total_market_price
+            response_data[_asset_id]['total_market_price'] = _total_market_price
 
-            response[_asset_id]['change'] = eod_data_for_asset['change']
-            response[_asset_id]['change_p'] = eod_data_for_asset['change_p']
+            response_data[_asset_id]['change'] = eod_data_for_asset['change']
+            response_data[_asset_id]['change_p'] = eod_data_for_asset['change_p']
 
-        return response
+        return list(response_data.values())
 
     def get_total_income_stats(self):
         pass
