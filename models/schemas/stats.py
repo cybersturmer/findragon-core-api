@@ -3,11 +3,11 @@ from pydantic import (
 )
 
 
-class DashboardTotalPurchase(BaseModel):
+class StatsTotalPurchaseCost(BaseModel):
     total_purchase: int
 
 
-class DashboardAssetsStats(BaseModel):
+class StatsAssets(BaseModel):
     id: int
     code: str
     price: float
