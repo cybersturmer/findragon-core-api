@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import (
     APIRouter,
     Depends
@@ -11,7 +13,7 @@ router = APIRouter(
 )
 
 
-@router.get('/assets', response_model=StatsAssets)
+@router.get('/assets', response_model=List[StatsAssets])
 async def get_assets_stats(
         service: Stats = Depends()
 ):
