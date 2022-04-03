@@ -29,7 +29,7 @@ class Dashboard:
     def __init__(self, orm_session: Session = Depends(get_session)):
         self.orm_session = orm_session
 
-    def get_total_stats(self):
+    def get_assets_stats(self):
         # Check if this SQL works for Postgres / Aurora
         # @todo only for current portfolio and maybe user
         transactions_list = \
