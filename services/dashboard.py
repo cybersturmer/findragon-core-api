@@ -14,10 +14,15 @@ class AssetTotalStats(TypedDict):
     code: str
     price: float
     amount: int
-    total_purchase: float
+
+    total_purchase_cost: float
     total_market_price: float
-    total_diff: float
-    total_ratio: float
+
+    portfolio_change: float
+    portfolio_change_p: float
+
+    change: float
+    change_p: float
 
 
 class Dashboard:
@@ -42,16 +47,18 @@ class Dashboard:
         mapping_list = {}
         response = {}
         for row in transactions_list:
-            _asset_id, _code, _amount, _total_purchase = row
+            _asset_id, _code, _amount, _total_purchase_cost = row
             asset = AssetTotalStats(
                 id=_asset_id,
                 code=_code,
                 price=0.0,
                 amount=_amount,
-                total_purchase=_total_purchase,
+                total_purchase_cost=_total_purchase_cost,
                 total_market_price=0.0,
-                total_diff=0.0,
-                total_ratio=0.0
+                portfolio_change=0.0,
+                portfolio_change_p=0.0,
+                change=0.0,
+                change_p=0.0
             )
 
             mapping_list[_code] = _asset_id
@@ -78,17 +85,20 @@ class Dashboard:
 
             _total_market_price = _price * response[_asset_id]['amount']
 
-            _total_purchase = response[_asset_id]['total_purchase']
+            _total_purchase_cost = response[_asset_id]['total_purchase_cost']
 
-            _total_diff = _total_market_price - _total_purchase
-            _total_ratio = _total_diff / _total_purchase * 100
+            _total_diff = _total_market_price - _total_purchase_cost
+            _total_ratio = _total_diff / _total_purchase_cost * 100
 
-            response[_asset_id]['total_diff'] = _total_diff
-            response[_asset_id]['total_ratio'] = _total_ratio
+            response[_asset_id]['portfolio_change'] = _total_diff
+            response[_asset_id]['portfolio_change_p'] = _total_ratio
 
             response[_asset_id]['price'] = _price
 
             response[_asset_id]['total_market_price'] = _total_market_price
+
+            response[_asset_id]['change'] = eod_data_for_asset['change']
+            response[_asset_id]['change_p'] = eod_data_for_asset['change_p']
 
         return response
 
