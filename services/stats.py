@@ -25,7 +25,7 @@ class AssetTotalStats(TypedDict):
     change_p: float
 
 
-class Dashboard:
+class Stats:
     def __init__(self, orm_session: Session = Depends(get_session)):
         self.orm_session = orm_session
 
