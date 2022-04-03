@@ -5,7 +5,7 @@ from .portfolios import router as portfolio_router
 from .assets import router as asset_router
 from .transactions import router as transaction_router
 from .incomes import router as income_router
-from .dashboard import router as dashboard_router
+from .stats import router as dashboard_router
 
 
 router = APIRouter()
